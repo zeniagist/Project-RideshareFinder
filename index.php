@@ -205,7 +205,7 @@ include("logout.php");
 
               <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 id="myModalLabel">Sign up today and start using our Car Sharing App!</h4>
+                <h4 id="myModalLabel">Sign up today and start using Rideshare Finder!</h4>
               </div>
 
               <div class="modal-body">
