@@ -97,6 +97,52 @@ $("#picture").change(function(){
         $("#updatePictureMessage").html(
             "<div class='alert alert-danger'>Only jpeg, png, and jpg images are accepted</div>"
         );
+    }else{
+        $("#updatePictureMessage").html('');
+    }
+    
+    // check image size, larger than 3 MB
+    if(imageSize > 3*1024*1024){
+        $("#updatePictureMessage").html(
+            "<div class='alert alert-danger'>Please upload an image less than 300 MB</div>"
+        );
+    }else{
+        $("#updatePictureMessage").html('');
+    }
+    
+    
+    // the FileReader object converts image to binary string
+    reader = new FileReader();
+    // callback
+    reader.onload = updatePreview;
+    // start the read operation -> convert content into data URL which is passed to the callback function
+    reader.readAsDataURL(file);
+});
+
+// AJAX Call to update profile picutre to user selected
+function updatePreview(event){
+    // console.log(event);
+    $("#preview2").attr("src", event.target.result);
+}
+
+// update picture
+$("#updatepictureform").submit(function(event){
+  //prevent default php processing
+  event.preventDefault();
+  
+    //   file missing
+  if(!file){
+      $("#updatePictureMessage").html(
+            "<div class='alert alert-danger'>Please upload a picture</div>"
+        );
+        return false;
+  }
+  
+  //   file missing
+  if(wrongType){
+        $("#updatePictureMessage").html(
+            "<div class='alert alert-danger'>Only jpeg, png, and jpg images are accepted</div>"
+        );
         return false;
     }
     
@@ -107,17 +153,28 @@ $("#picture").change(function(){
         );
         return false;
     }
-    
-    // the FileReader object converts image to binary string
-    reader = new FileReader();
-    // callback
-    reader.onload = updatePreview;
-    // start the read operation -> convert content into data URL which is passed to the callback function
-    reader.readAsDataURL(file);
+    //  var test = new FormData(this);
+    //  console.log(test.get("picture"));
+  
+  //send them to updatepicture.php using AJAX
+  $.ajax({
+    url: "profile/updatepicture.php",
+    type: "POST",
+    data: new FormData(this),
+    contentType: false,
+    cache: false,
+    processData: false,
+    // AJAX Call successful
+    success: function(data){
+    //   if(data){
+    //     $("#updatePictureMessage").html(data);
+    //   }
+    },
+    // AJAX Call fails: show error AJAX Call error
+    error: function(){
+      $("#updatePictureMessage").html(
+          "<div class='alert alert-danger'>There was an error with the update profile picture AJAX Call. Please try again later</div>"
+      );
+    }
+  });
 });
-
-// update profile picutre to user selected
-function updatePreview(event){
-    // console.log(event);
-    $("#preview2").attr("src", event.target.result);
-}
