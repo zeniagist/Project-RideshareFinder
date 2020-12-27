@@ -9,7 +9,7 @@ $("#updateusernameform").submit(function(event){
 
   //send them to signup.php using AJAX
   $.ajax({
-    url: "profile/updateusername.php",
+    url: "updateusername.php",
     type: "POST",
     data: datatopost,
     // AJAX Call successful
@@ -38,7 +38,7 @@ $("#updatepasswordform").submit(function(event){
 
   //send them to signup.php using AJAX
   $.ajax({
-    url: "profile/updatepassword.php",
+    url: "updatepassword.php",
     type: "POST",
     data: datatopost,
     // AJAX Call successful
@@ -65,7 +65,7 @@ $("#updateemailform").submit(function(event){
 
   //send them to signup.php using AJAX
   $.ajax({
-    url: "profile/updateemail.php",
+    url: "updateemail.php",
     type: "POST",
     data: datatopost,
     // AJAX Call successful
@@ -158,7 +158,7 @@ $("#updatepictureform").submit(function(event){
   
   //send them to updatepicture.php using AJAX
   $.ajax({
-    url: "profile/updatepicture.php",
+    url: "updatepicture.php",
     type: "POST",
     data: new FormData(this),
     contentType: false,
@@ -166,9 +166,11 @@ $("#updatepictureform").submit(function(event){
     processData: false,
     // AJAX Call successful
     success: function(data){
-    //   if(data){
-    //     $("#updatePictureMessage").html(data);
-    //   }
+      if(data){
+          $("#updatePictureMessage").html(data);
+      }else{
+          location.reload();
+      }
     },
     // AJAX Call fails: show error AJAX Call error
     error: function(){

@@ -27,6 +27,7 @@ if(!$count){
 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 $username = $row['username'];
 $email = $row['email'];
+$picture = $row['profilepicture'];
 
 ?>
 <!DOCTYPE html>
@@ -112,7 +113,13 @@ $email = $row['email'];
                 <li>
                     <a href="#">
                         <div data-toggle="modal" data-target="#updatepicture">
-                            <img src="https://cdn.pixabay.com/photo/2017/01/06/05/28/car-1957037_960_720.jpg" class="preview">
+                            <?php
+                            if(!file_exists($picture) || $picture == ''){
+                                echo "<img src='https://cdn.pixabay.com/photo/2017/01/06/05/28/car-1957037_960_720.jpg' class='preview'>";
+                            }else{
+                                echo "<img src='$picture' class='preview'>";
+                            }
+                            ?>
                         </div>
                     </a>
                 </li>
@@ -295,7 +302,7 @@ $email = $row['email'];
       </form>
       
       <!-- Update profile picture -->
-      <form method="post" id="updatepictureform">
+      <form method="post" id="updatepictureform" enctype="multipart/form-data">
         <div class="modal" id="updatepicture" role="dialog" aria-labelledby="#myModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -313,7 +320,13 @@ $email = $row['email'];
               
               <!--Profile Picture-->
               <div>
-                  <img src="https://cdn.pixabay.com/photo/2017/01/06/05/28/car-1957037_960_720.jpg" class="preview2">
+                <?php
+                if(!file_exists($picture) || $picture == '' ){
+                    echo "<img src='https://cdn.pixabay.com/photo/2017/01/06/05/28/car-1957037_960_720.jpg' class='preview2' id='preview2'>";
+                }else{
+                    echo "<img src='$picture' class='preview2' id='preview2'>";
+                }
+                ?>
               </div>
 
                 <div class="form-group">
@@ -333,7 +346,7 @@ $email = $row['email'];
         </div>
       </form>
       
-        <script src="profile/profile.js"></script>
+        <script src="profile.js"></script>
     </body>
     
     </html>

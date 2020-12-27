@@ -5,6 +5,27 @@ if(!$_SESSION['user_id']) {
  header('Location: index.php');
  exit;
 }
+
+include('connection.php');
+
+$user_id = $_SESSION['user_id'];
+
+//get username and email
+$sql = "SELECT * FROM users WHERE user_id='$user_id'";
+$result = mysqli_query($link, $sql);
+if(!$result){
+    echo "error when selecting user_id from users table!";
+}
+
+$count = mysqli_num_rows($result);
+
+if(!$count){
+  echo '<div class="alert alert-danger">Error</div>';
+  exit;
+}
+
+$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+$picture = $row['profilepicture'];
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +51,17 @@ if(!$_SESSION['user_id']) {
           #container{
             margin-top:120px;
           }
+          
+            .preview{
+              height: 30px;
+              border-radius: 50%;
+            }
+            
+            .preview2{
+              height: auto;
+              max-width: 100%;
+              border-radius: 50%;
+            }
 
           #allNotes, #done, #notepad, .delete{
             display: none;
@@ -103,6 +135,20 @@ if(!$_SESSION['user_id']) {
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
+                    <a href="#">
+                        <div data-toggle="modal" data-target="#updatepicture">
+                            <!--<img src='https://cdn.pixabay.com/photo/2017/01/06/05/28/car-1957037_960_720.jpg' class='preview'>-->
+                            <?php
+                            if(!file_exists($picture) || $picture == ''){
+                                echo "<img src='https://cdn.pixabay.com/photo/2017/01/06/05/28/car-1957037_960_720.jpg' class='preview'>";
+                            }else{
+                                echo "<img src='$picture' class='preview'>";
+                            }
+                            ?>
+                        </div>
+                    </a>
+                </li>
+                <li>
                     <a href="profile.php"> 
                     <?php
                         echo $_SESSION['username'];
@@ -115,6 +161,51 @@ if(!$_SESSION['user_id']) {
           </div>
         </div>
       </nav>
+      
+      <!-- Update profile picture -->
+      <form method="post" id="updatepictureform" enctype="multipart/form-data">
+        <div class="modal" id="updatepicture" role="dialog" aria-labelledby="#myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h4 id="myModalLabel">Upload Picture:</h4>
+              </div>
+
+              <div class="modal-body">
+                
+              <div id="updatePictureMessage">
+                <!-- Update Username message from PHP File -->
+              </div>
+              
+              <!--Profile Picture-->
+              <div>
+                <?php
+                if(!file_exists($picture) || $picture == '' ){
+                    echo "<img src='https://cdn.pixabay.com/photo/2017/01/06/05/28/car-1957037_960_720.jpg' class='preview2' id='preview2'>";
+                }else{
+                    echo "<img src='$picture' class='preview2' id='preview2'>";
+                }
+                ?>
+              </div>
+
+                <div class="form-group">
+                  <label for="picture">Select a Picture:</label>
+                  <input type="file" name="picture" id="picture">
+                </div>
+
+              </div>
+
+              <div class="modal-footer">                
+                <input class="btn purple" name="updateusername" type="submit" value="Submit">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </form>
       
       <!-- Footer -->
       <div class="footer">
@@ -135,6 +226,7 @@ if(!$_SESSION['user_id']) {
       </div>
     
     <script src="notes/mytrips.js"></script>
+    <script src="profile.js"></script>
     </body>
     
     </html>
