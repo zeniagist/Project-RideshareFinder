@@ -57,6 +57,14 @@ include("logout.php");
             #searchBtn{
                 margin-top: 20px;
             }
+            
+            #signup{
+                margin: 30px auto;
+            }
+            
+            .signupButton{
+                color: white;
+            }
         </style>
 
     </head>
@@ -115,6 +123,9 @@ include("logout.php");
                     
                     <!--Google Map-->
                     <div id="googleMap"></div>
+                    
+                    <!--Sign up button-->
+                    <button class="btn btn-lg purple signupButton" id="signup"data-toggle="modal" data-target="#signupModal">Sign up-It's free!</button>
                 </div>
             </div>
         </div>
@@ -194,7 +205,7 @@ include("logout.php");
 
               <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 id="myModalLabel">Sign up today and start using our Online Notes App!</h4>
+                <h4 id="myModalLabel">Sign up today and start using our Car Sharing App!</h4>
               </div>
 
               <div class="modal-body">
@@ -206,6 +217,16 @@ include("logout.php");
                 <div class="form-group">
                   <label for="username" class="sr-only">Username:</label>
                   <input class="form-control" type="text" name="username" id="username" placeholder="Username" maxlength="30">
+                </div>
+                
+                <div class="form-group">
+                  <label for="firstname" class="sr-only">First Name:</label>
+                  <input class="form-control" type="text" name="firstname" id="firstname" placeholder="First Name" maxlength="30">
+                </div>
+                
+                <div class="form-group">
+                  <label for="lastname" class="sr-only">Last Name:</label>
+                  <input class="form-control" type="text" name="lastname" id="lastname" placeholder="Last Name" maxlength="30">
                 </div>
 
                 <div class="form-group">
@@ -223,10 +244,31 @@ include("logout.php");
                   <input class="form-control" type="password" name="password2" id="password2" placeholder="Confirm Password" maxlength="30">
                 </div>
                 
+                <div class="form-group">
+                  <label for="phonenumber" class="sr-only">Telephone Number:</label>
+                  <input class="form-control" type="text" name="phonenumber" id="phonenumber" placeholder="Telephone Number" maxlength="30">
+                </div>
+                
+                <div class="form-group">
+                  <label>
+                      <input type="radio" name="gender" id="male">
+                      Male
+                  </label>
+                  <label>
+                      <input type="radio" name="gender" id="female">
+                      Female
+                  </label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="moreinformation">Comments:</label>
+                    <textarea name="moreinformation" id="moreinformation" class="form-control" rows="5" maxlength="300"></textarea>
+                </div>
+                
               </div>
 
               <div class="modal-footer">
-                <input class="btn purple" name="signup" type="submit" value="Sign Up">
+                <input class="btn purple signupButton" name="signup" type="submit" value="Sign Up">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
 
