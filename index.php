@@ -31,6 +31,9 @@ include("logout.php");
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
         
+        <!--Google Maps API-->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo"></script>
+        
         <style>
             /*Container*/
             #myContainer{
@@ -102,6 +105,9 @@ include("logout.php");
                             <input type="submit" value="Search" class="btn btn-lg purple" name="search">
                         </div>
                     </form>
+                    
+                    <!--Google Map-->
+                    <div id="googleMap"></div>
                 </div>
             </div>
         </div>
@@ -255,6 +261,7 @@ include("logout.php");
       </form>     
 
       <script src="javascript.js"></script>
+      <script src="map.js"></script>
     </body>
     
     </html>
