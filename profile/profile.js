@@ -80,3 +80,44 @@ $("#updateemailform").submit(function(event){
     }
   });
 });
+
+// update profile picture preview
+var file, imageType, imageSize, wrongType, reader;
+$("#picture").change(function(){
+    file = this.files[0];
+    console.log(file);
+    imageType = file.type;
+    imageSize = file.size;
+    
+    // check acceptable file types
+    var acceptableTypes = ["image/jpeg", "image/png", "image/jpg"];
+    wrongType = ($.inArray(imageType, acceptableTypes) == -1);
+    
+    if(wrongType){
+        $("#updatePictureMessage").html(
+            "<div class='alert alert-danger'>Only jpeg, png, and jpg images are accepted</div>"
+        );
+        return false;
+    }
+    
+    // check image size, larger than 3 MB
+    if(imageSize > 3*1024*1024){
+        $("#updatePictureMessage").html(
+            "<div class='alert alert-danger'>Please upload an image less than 300 MB</div>"
+        );
+        return false;
+    }
+    
+    // the FileReader object converts image to binary string
+    reader = new FileReader();
+    // callback
+    reader.onload = updatePreview;
+    // start the read operation -> convert content into data URL which is passed to the callback function
+    reader.readAsDataURL(file);
+});
+
+// update profile picutre to user selected
+function updatePreview(event){
+    // console.log(event);
+    $("#preview2").attr("src", event.target.result);
+}
