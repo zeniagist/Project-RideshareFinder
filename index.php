@@ -32,7 +32,7 @@ include("logout.php");
         <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
         
         <!--Google Maps API-->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>
+        <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>-->
         
         <style>
             /*Container*/
@@ -52,6 +52,10 @@ include("logout.php");
             
             #departure, #destination{
                 color: black;
+            }
+            
+            #searchBtn{
+                margin-top: 20px;
             }
         </style>
 
@@ -104,11 +108,10 @@ include("logout.php");
                             <!--Destination-->
                             <label for="destination" class="sr-only">Destination</label>
                             <input type="text" placeholder="Destination" name="destination" id="destination">
-                            
-                            <!--Search Button-->
-                            <input type="submit" value="Search" class="btn btn-lg purple" name="search">
                         </div>
                     </form>
+                    <!--Search Button-->
+                    <input type="submit" value="Search" class="btn btn-lg purple" name="search" id="searchBtn"onclick="calcRoute();">
                     
                     <!--Google Map-->
                     <div id="googleMap"></div>
@@ -263,7 +266,9 @@ include("logout.php");
           </div>
         </div>
       </form>     
-
+    
+    <!--Google Map API-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>
       <script src="javascript.js"></script>
       <script src="map.js"></script>
     </body>
