@@ -32,7 +32,7 @@ include("logout.php");
         <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
         
         <!--Google Maps API-->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>
         
         <style>
             /*Container*/
@@ -48,6 +48,10 @@ include("logout.php");
             
             .btn{
                 border: none;
+            }
+            
+            #departure, #destination{
+                color: black;
             }
         </style>
 
