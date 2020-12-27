@@ -27,6 +27,7 @@ if(!$count){
 $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 $username = $row['username'];
 $email = $row['email'];
+$picture = $row['profilepicture'];
 
 ?>
 <!DOCTYPE html>
@@ -51,6 +52,17 @@ $email = $row['email'];
         <style>
           #container{
             margin-top:100px;
+          }
+          
+          .preview{
+              height: 30px;
+              border-radius: 50%;
+          }
+          
+          .preview2{
+              height: auto;
+              max-width: 100%;
+              border-radius: 50%;
           }
           
           table{
@@ -99,7 +111,21 @@ $email = $row['email'];
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#profile.php"> 
+                    <a href="#">
+                        <div data-toggle="modal" data-target="#updatepicture">
+                            <?php
+                            if(!file_exists($picture) || $picture == ''){
+                                echo "<img src='https://cdn.pixabay.com/photo/2017/01/06/05/28/car-1957037_960_720.jpg' class='preview'>";
+                            }else{
+                                echo "<img src='$picture' class='preview'>";
+                            }
+                            ?>
+                        </div>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="profile.php"> 
                     <?php
                         echo $username;
                     ?>
@@ -274,7 +300,53 @@ $email = $row['email'];
           </div>
         </div>
       </form>
-        <script src="profile/profile.js"></script>
+      
+      <!-- Update profile picture -->
+      <form method="post" id="updatepictureform" enctype="multipart/form-data">
+        <div class="modal" id="updatepicture" role="dialog" aria-labelledby="#myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h4 id="myModalLabel">Upload Picture:</h4>
+              </div>
+
+              <div class="modal-body">
+                
+              <div id="updatePictureMessage">
+                <!-- Update Username message from PHP File -->
+              </div>
+              
+              <!--Profile Picture-->
+              <div>
+                <?php
+                if(!file_exists($picture) || $picture == '' ){
+                    echo "<img src='https://cdn.pixabay.com/photo/2017/01/06/05/28/car-1957037_960_720.jpg' class='preview2' id='preview2'>";
+                }else{
+                    echo "<img src='$picture' class='preview2' id='preview2'>";
+                }
+                ?>
+              </div>
+
+                <div class="form-group">
+                  <label for="picture">Select a Picture:</label>
+                  <input type="file" name="picture" id="picture">
+                </div>
+
+              </div>
+
+              <div class="modal-footer">                
+                <input class="btn purple" name="updateusername" type="submit" value="Submit">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </form>
+      
+        <script src="profile.js"></script>
     </body>
     
     </html>
