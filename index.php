@@ -30,38 +30,81 @@ include("logout.php");
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
+        
+        <style>
+            /*Container*/
+            #myContainer{
+                margin-top: 30px;
+                text-align: center;
+                color: white;
+            }
+            
+            h1{
+                font-size: 4em;
+            }
+            
+            .btn{
+                border: none;
+            }
+        </style>
 
     </head>
     
     <body>
-      <!-- Navigation Bar -->
-      <nav rule="navigation" class="navbar navbar-default navbar-fixed-top" id="custom-bootstrap-menu">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a href="index.php" class="navbar-brand">Rideshare Finder</a>
-        
-            <button type="button" class="navbar-toggle" data-target="#navbarCollapse" data-toggle="collapse">
-              <span class="sr-only">Toggle Navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>            
-          </div>
-        
-          <div class="navbar-collapse collapse" id="navbarCollapse">
-            <ul class="nav navbar-nav">
-              <!--<li class="active"><a href="index.php">Home</a></li>-->
-              <!--<li><a href="#">Help</a></li>-->
-              <!--<li><a href="#">Contact Us</a></li>-->
-            </ul>
-        
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="#loginModal" data-toggle="modal">Login</a></li>
-            </ul>
-        
-          </div>
+        <!-- Navigation Bar -->
+        <nav rule="navigation" class="navbar navbar-default navbar-fixed-top" id="custom-bootstrap-menu">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <a href="index.php" class="navbar-brand">Rideshare Finder</a>
+            
+                <button type="button" class="navbar-toggle" data-target="#navbarCollapse" data-toggle="collapse">
+                  <span class="sr-only">Toggle Navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>            
+              </div>
+            
+              <div class="navbar-collapse collapse" id="navbarCollapse">
+                <ul class="nav navbar-nav">
+                  <!--<li class="active"><a href="index.php">Home</a></li>-->
+                  <!--<li><a href="#">Help</a></li>-->
+                  <!--<li><a href="#">Contact Us</a></li>-->
+                </ul>
+            
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="#loginModal" data-toggle="modal">Login</a></li>
+                </ul>
+            
+              </div>
+            </div>
+        </nav>
+    
+        <!--Container-->
+        <div class="container-fluid" id="myContainer">
+            <div class="row">
+                <div class="col-lg-6 col-md-offset-3">
+                    <h1>Plan Your Next Trip Now</h1>
+                    <p class="lead">Save Money! Save the Environment!</p>
+                    
+                    <!--Search Form-->
+                    <form class="form-inline" method="get" id="searchForm">
+                        <div class="form-group">
+                            <!--Departure-->
+                            <label for="departure" class="sr-only">Departure</label>
+                            <input type="text" placeholder="Departure" name="departure" id="departure">
+                            
+                            <!--Destination-->
+                            <label for="destination" class="sr-only">Destination</label>
+                            <input type="text" placeholder="Destination" name="destination" id="destination">
+                            
+                            <!--Search Button-->
+                            <input type="submit" value="Search" class="btn btn-lg purple" name="search">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </nav>
 
       <!-- Footer -->
       <div class="footer">
