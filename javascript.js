@@ -42,7 +42,7 @@ $("#loginform").submit(function(event){
     // AJAX Call successful
     success: function(data){
       if(data == "success"){
-        window.location = "mainpageloggedin.php";
+        window.location = "search.php";
       }else{
         $('#loginMessage').html(data);
       }

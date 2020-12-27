@@ -6,14 +6,13 @@ if(!$_SESSION['user_id']) {
  exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible"content="IE=edge">
         <meta name="viewport"content="width=device-width, initial-scale=1">
-        <title>My Notes</title>
+        <title>Rideshare Finder</title>
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -25,17 +24,47 @@ if(!$_SESSION['user_id']) {
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
-
+        
+        <!--Google Maps API-->
+        <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>-->
+        
         <style>
-          #container{
-            margin-top:120px;
-          }
+            /*Container*/
+            #myContainer{
+                margin-top: 30px;
+                text-align: center;
+                color: white;
+            }
+            
+            h1{
+                font-size: 4em;
+            }
+            
+            .btn{
+                border: none;
+            }
+            
+            #departure, #destination{
+                color: black;
+            }
+            
+            #searchBtn{
+                margin-top: 20px;
+            }
+            
+            #signup{
+                margin: 30px auto;
+            }
+            
+            .signupButton{
+                color: white;
+            }
         </style>
 
     </head>
     
     <body>
-      <!-- Navigation Bar -->
+        <!-- Navigation Bar -->
       <nav rule="navigation" class="navbar navbar-default navbar-fixed-top" id="custom-bootstrap-menu">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -72,7 +101,36 @@ if(!$_SESSION['user_id']) {
           </div>
         </div>
       </nav>
-      
+    
+        <!--Container-->
+        <div class="container-fluid" id="myContainer">
+            <div class="row">
+                <div class="col-lg-6 col-md-offset-3">
+                    <h1>Plan Your Next Trip Now</h1>
+                    <p class="lead">Save Money! Save the Environment!</p>
+                    
+                    <!--Search Form-->
+                    <form class="form-inline" method="get" id="searchForm">
+                        <div class="form-group">
+                            <!--Departure-->
+                            <label for="departure" class="sr-only">Departure</label>
+                            <input type="text" placeholder="Departure" name="departure" id="departure">
+                            
+                            <!--Destination-->
+                            <label for="destination" class="sr-only">Destination</label>
+                            <input type="text" placeholder="Destination" name="destination" id="destination">
+                        </div>
+                    </form>
+                    <!--Search Button-->
+                    <input type="submit" value="Search" class="btn btn-lg purple" name="search" id="searchBtn"onclick="calcRoute();">
+                    
+                    <!--Google Map-->
+                    <div id="googleMap"></div>
+                    
+                </div>
+            </div>
+        </div>
+
       <!-- Footer -->
       <div class="footer">
         <div class="container">
@@ -84,14 +142,11 @@ if(!$_SESSION['user_id']) {
           .</p>
         </div>
       </div>
-
-      <!-- Container -->
-      <div class="container" id="container">
-        <div class="row">
-        </div>
-      </div>
     
-    <script src="notes/mytrips.js"></script>
+    <!--Google Map API-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>
+      <script src="javascript.js"></script>
+      <script src="map.js"></script>
     </body>
     
     </html>
