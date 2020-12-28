@@ -27,7 +27,6 @@ myRadio.click(function(){
 // **************
 // Edit Trips Radio Buttons
 // **************
-// Select radio buttons
 var myRadio = $('input[name="regular2"]');
 myRadio.click(function(){
     if($(this).is(':checked')){
@@ -82,9 +81,10 @@ function getAddTripDepartureCoordinates(){
             
             // console.log(data);
             
+            // coordinates of destination
             getAddTripDestinationCoordinates();
         }else{
-            // coordinates of destination
+            // coordinates of destination with missing departure
             getAddTripDestinationCoordinates();
         }
     });
@@ -109,10 +109,37 @@ function getAddTripDestinationCoordinates(){
             
             // console.log(data);
             
-            // getAddTripDepartureCoordinates();
+            // Submit trip details
+            submitAddTripRequest();
         }else{
-            // coordinates of depature
-            // getAddTripDepartureCoordinates();
+            // Submit trip details with missing Destination
+            submitAddTripRequest();
+        }
+    });
+}
+
+// Submit trip details
+function submitAddTripRequest(){
+//send to addtrips.php using AJAX
+    $.ajax({
+        url: "addtrips.php",
+        type: "POST",
+        data: data,
+        // AJAX Call successful
+        success: function(returnedData){
+            if(returnedData){
+                $("#addtripmessage").html(returnedData);
+            }else{
+                // hide modal
+                // reset form
+                // load trips
+            }
+        },
+        // AJAX Call fails: show error AJAX Call error
+        error: function(){
+          $("#addtripmessage").html(
+              "<div class='alert alert-danger'>There was an error with the Add Trips AJAX Call. Please try again later</div>"
+          );
         }
     });
 }
