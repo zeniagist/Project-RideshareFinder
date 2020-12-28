@@ -1,58 +1,63 @@
-// set map options
-var myLatLng = {lat: 51.5, lng:-0.1}
+$(function(){
+    //set map options
+var myLatLng = {lat: 38.9072, lng: -77.0369};
 var mapOptions = {
     center: myLatLng,
-    zoom: 7,
+    zoom: 10,
     mapTypeId: google.maps.MapTypeId.ROADMAP
+
 };
 
-// create map
-var map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
+//create autocomplete objects
+var input1 = document.getElementById("departure");
+var input2 = document.getElementById("destination");
+var options = {
+    types: ['(cities)']   
+}
+var autocomplete1 = new google.maps.places.Autocomplete(input1, options);
+var autocomplete2 = new google.maps.places.Autocomplete(input2, options);
 
 //create a DirectionsService object to use the route method and get a result for our request
-var directionsService= new google.maps.DirectionsService();
+var directionsService = new google.maps.DirectionsService();
 
-//create a DirectionsRenderer object which we will use to display the route
-var directionsDisplay= new google.maps.DirectionsRenderer();
+//onload:
+google.maps.event.addDomListener(window, 'load', initialize);
 
-//bind the DirectionsRenderer to the map
-directionsDisplay.setMap(map);
+//initialize: draw map in the #googleMap div
+function initialize() {
+    //create a DirectionsRenderer object which we will use to display the route
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    //create map
+    map=new google.maps.Map(document.getElementById("googleMap"),mapOptions);
+    //bind the DirectionsRenderer to the map
+    directionsDisplay.setMap(map);
+}//end of initialize
 
-// define calcRoute function
-function calcRoute(){
-     var request={
-            origin: document.getElementById("departure").value,
-            destination: document.getElementById("destination").value,
-            travelMode: google.maps.TravelMode.DRIVING, //WALKING, BYCYCLING, TRANSIT
-            unitSystem: google.maps.UnitSystem.IMPERIAL
-        };
-        
-        directionsService.route(request, function(result, status){
-            if(status== google.maps.DirectionsStatus.OK){
-                //display route
-                directionsDisplay.setDirections(result);
-            }else{
-                // delete route from map
-                // directionsDisplay.setDirections({routes:[]});
-                
-                // center map
-                map.setCenter(myLatLng);
-                
-                // display error message
-                $("#output").html("<div class='alert-danger'>Could not retrieve driving distance!</div>");
+//Calculate route when selecting autocomplete:
+google.maps.event.addListener(autocomplete1, 'place_changed', calcRoute);
+google.maps.event.addListener(autocomplete2, 'place_changed', calcRoute);
+
+// Calculate Route:  
+function calcRoute() {
+    var start = $('#departure').val();
+    var end = $('#destination').val();
+    var request = {
+        origin:start, 
+        destination:end,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.IMPERIAL,
+        durationInTraffic: false,   
+        avoidHighways: false,   
+        avoidTolls: false,
+    };
+    if(start && end){
+        directionsService.route(request, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            }else{ 
+                initialize();
             }
         });
+    }
 }
-
-// create autocomplete object
-var options = {
-    types:['(cities)']
-};
-
-// create autocomplete objects for From
-var input1 = document.getElementById("departure");
-var autocomplete1 = new google.maps.places.Autocomplete(input1,options);
-
-// create autocomplete objects for To
-var input2 = document.getElementById("destination");
-var autocomplete2 = new google.maps.places.Autocomplete(input2,options);
+});

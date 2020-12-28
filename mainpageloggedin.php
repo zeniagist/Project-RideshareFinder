@@ -62,6 +62,30 @@ $picture = $row['profilepicture'];
               max-width: 100%;
               border-radius: 50%;
             }
+            
+            /*Show autocomplete for cities*/
+            .modal{
+                z-index: 20;
+            }
+            
+            .modal-backdrop{
+                z-index: 10;
+            }
+            
+            .days{
+                padding-right: 15px;
+            }
+            
+            .time{
+                margin-top:10px;
+            }
+            /*Map*/
+            /*#googleMap{*/
+            /*    width: 300px;*/
+            /*    height: 200px;*/
+            /*    margin: 30px auto;*/
+            /*}*/
+            
         </style>
 
     </head>
@@ -182,115 +206,117 @@ $picture = $row['profilepicture'];
       </div>
       
       <!-- Add Trip form -->
-      <form method="post" id="addtripform">
-        <div class="modal" id="addtripModal" role="dialog" aria-labelledby="#myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-
-              <div class="modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
-                <h4 id="myModalLabel">New Trip:</h4>
+        <form method="post" id="addtripform">
+            <div class="modal" id="addtripModal" role="dialog" aria-labelledby="#myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+            
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h4 id="myModalLabel">New Trip:</h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                    
+                    <div id="addtripmessage">
+                        <!-- Add trip message from PHP File -->
+                    </div>
+                    
+                    <!--Google Map-->
+                    <div id="googleMap"></div>
+                    
+                    <!--Input Boxes-->
+                    <div class="form-group">
+                      <label for="departure" class="sr-only">Departure:</label>
+                      <input class="form-control" type="text" name="departure" id="departure" placeholder="Departure">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="destination" class="sr-only">Destination:</label>
+                      <input class="form-control" type="text" name="destination" id="destination" placeholder="Destination">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="price" class="sr-only">Price:</label>
+                      <input class="form-control" type="number" name="price" id="price" placeholder="Price">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="seatsavailable" class="sr-only">Seats Available:</label>
+                      <input class="form-control" type="number" name="seatsavailable" id="seatsavailable" placeholder="Seats Available">
+                    </div>
+                    
+                    <!--Radios-->
+                    <div class="form-group">
+                      <label>
+                          <input type="radio" name="regular" id="yes" value="Y">
+                          Regular Commute
+                      </label>
+                      <label>
+                          <input type="radio" name="regular" id="no" value="N">
+                          One-off
+                      </label>
+                    </div>
+                    
+                    <!--Checkboxes-->
+                    <div class="checkbox checkbox-inline regular">
+                        <label>
+                          <input type="checkbox" name="monday" id="monday" value="1">
+                          Monday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="tuesday" id="tuesday" value="2">
+                          Tuesday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="wednesday" id="wednesday" value="3">
+                          Wednesday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="thrusday" id="thrusday" value="4">
+                          Thrusday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="friday" id="friday" value="5">
+                          Friday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="saturday" id="saturday" value="6">
+                          Saturday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="sunday" id="sunday" value="1">
+                          Sunday
+                        </label>
+                    </div>
+                    
+                    <!--Date-->
+                    <div class="form-group oneoff">
+                      <label for="date" class="sr-only">Date:</label>
+                      <input class="form-control" name="date" id="date" readonly="readonly">
+                    </div>
+                    
+                    <!--Time for Regular-->
+                    <div class="form-group regular oneoff time">
+                      <label for="time" class="sr-only">Time:</label>
+                      <input class="form-control" type="time" name="time" id="time">
+                    </div>
+                    
+                    <!--End-->
+                  </div>
+            
+                  <div class="modal-footer">
+                    <input class="btn purple addtripButton" name="createtrip" type="submit" value="Create Trip">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  </div>
+            
+                </div>
               </div>
-
-              <div class="modal-body">
-                
-              <div id="addtripmessage">
-                <!-- Add trip message from PHP File -->
-              </div>
-                
-                <!--Input Boxes-->
-                <div class="form-group">
-                  <label for="departure" class="sr-only">Departure:</label>
-                  <input class="form-control" type="text" name="departure" id="departure" placeholder="Departure">
-                </div>
-                
-                <div class="form-group">
-                  <label for="destination" class="sr-only">Destination:</label>
-                  <input class="form-control" type="text" name="destination" id="destination" placeholder="Destination">
-                </div>
-                
-                <div class="form-group">
-                  <label for="price" class="sr-only">Price:</label>
-                  <input class="form-control" type="number" name="price" id="price" placeholder="Price">
-                </div>
-                
-                <div class="form-group">
-                  <label for="seatsavailable" class="sr-only">Seats Available:</label>
-                  <input class="form-control" type="number" name="seatsavailable" id="seatsavailable" placeholder="Seats Available">
-                </div>
-                
-                <!--Radios-->
-                <div class="form-group">
-                  <label>
-                      <input type="radio" name="regular" id="yes" value="Y">
-                      Regular
-                  </label>
-                  <label>
-                      <input type="radio" name="oneoff" id="no" value="N">
-                      One-off
-                  </label>
-                </div>
-                
-                <!--Checkboxes-->
-                <div class="checkbox checkbox-inline">
-                    <!--Days of the week-->
-                    <label>
-                      <input type="checkbox" name="monday" id="monday" value="1">
-                      Monday
-                    </label>
-                    <label>
-                      <input type="checkbox" name="tuesday" id="tuesday" value="2">
-                      Tuesday
-                    </label>
-                    <label>
-                      <input type="checkbox" name="wednesday" id="wednesday" value="3">
-                      Wednesday
-                    </label>
-                    <label>
-                      <input type="checkbox" name="thrusday" id="thrusday" value="4">
-                      Thrusday
-                    </label>
-                    <label>
-                      <input type="checkbox" name="friday" id="friday" value="5">
-                      Friday
-                    </label>
-                    <label>
-                      <input type="checkbox" name="saturday" id="saturday" value="6">
-                      Saturday
-                    </label>
-                    <label>
-                      <input type="checkbox" name="sunday" id="sunday" value="1">
-                      Sunday
-                    </label>
-                </div>
-                
-                <!--Date-->
-                <div class="form-group">
-                  <label for="date" class="sr-only">Date:</label>
-                  <input class="form-control" name="date" id="date" readonly="readonly">
-                </div>
-                
-                <!--Time for Regular-->
-                <div class="form-group">
-                  <label for="time" class="sr-only">Time:</label>
-                  <input class="form-control" type="time" name="time" id="time">
-                </div>
-                
-                <!--End-->
-              </div>
-
-              <div class="modal-footer">
-                <input class="btn purple addtripButton" name="addtrip" type="submit" value="Create Trip">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-              </div>
-
             </div>
-          </div>
-        </div>
-      </form>
-      
-      <!-- Footer -->
-      <div class="footer">
+        </form>
+        
+        <!-- Footer -->
+        <div class="footer">
         <div class="container">
           <p>Zenia Gist Copyright&copy; 2020 -
             <?php 
@@ -299,10 +325,13 @@ $picture = $row['profilepicture'];
             ?>
           .</p>
         </div>
-      </div>
-    
-    <script src="mytrips.js"></script>
-    <script src="profile.js"></script>
+        </div>
+        <!--Google Map API-->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>
+        
+        <script src="map.js"></script>
+        <script src="mytrips.js"></script>
+        <script src="profile.js"></script>
     </body>
     
     </html>
