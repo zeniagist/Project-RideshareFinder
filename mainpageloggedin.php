@@ -73,6 +73,7 @@ $picture = $row['profilepicture'];
             /*Show autocomplete for cities*/
             .modal{
                 z-index: 20;
+                margin-top:50px;
             }
             
             .modal-backdrop{
@@ -203,8 +204,11 @@ $picture = $row['profilepicture'];
                     <button type="button" class="btn btn-lg purple" data-toggle="modal" data-target="#addtripModal">
                         Add Trips
                     </button>
+                    
+                    <button type="button" class="btn btn-lg purple" data-toggle="modal" data-target="#edittripModal">
+                        Edit Trip
+                    </button>
                 </div>
-                
                 <div id="myTrips" class="trips">
                     <!--AJAX Call to PHP File-->
                 </div>
@@ -314,6 +318,114 @@ $picture = $row['profilepicture'];
             
                   <div class="modal-footer">
                     <input class="btn purple addtripButton" name="createtrip" type="submit" value="Create Trip">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  </div>
+            
+                </div>
+              </div>
+            </div>
+        </form>
+        
+        <!-- Edit Trip form -->
+        <form method="post" id="edittripform">
+            <div class="modal" id="edittripModal" role="dialog" aria-labelledby="#myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+            
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h4 id="myModalLabel">Edit Trip:</h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                    
+                    <div id="edittripmessage">
+                        <!-- Add trip message from PHP File -->
+                    </div>
+                    
+                    <!--Input Boxes-->
+                    <div class="form-group">
+                      <label for="departure2" class="sr-only">Departure:</label>
+                      <input class="form-control" type="text" name="departure2" id="departure2" placeholder="Departure">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="destination2" class="sr-only">Destination:</label>
+                      <input class="form-control" type="text" name="destination2" id="destination2" placeholder="Destination">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="price2" class="sr-only">Price:</label>
+                      <input class="form-control" type="number" name="price2" id="price2" placeholder="Price">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="seatsavailable2" class="sr-only">Seats Available:</label>
+                      <input class="form-control" type="number" name="seatsavailable2" id="seatsavailable2" placeholder="Seats Available">
+                    </div>
+                    
+                    <!--Radios-->
+                    <div class="form-group">
+                      <label>
+                          <input type="radio" name="regular2" id="yes2" value="Y">
+                          Regular Commute
+                      </label>
+                      <label>
+                          <input type="radio" name="regular2" id="no2" value="N">
+                          One-off
+                      </label>
+                    </div>
+                    
+                    <!--Checkboxes-->
+                    <div class="checkbox checkbox-inline regular2">
+                        <label>
+                          <input type="checkbox" name="monday2" id="monday2" value="1">
+                          Monday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="tuesday2" id="tuesday2" value="2">
+                          Tuesday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="wednesday2" id="wednesday2" value="3">
+                          Wednesday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="thrusday2" id="thrusday2" value="4">
+                          Thrusday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="friday2" id="friday2" value="5">
+                          Friday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="saturday2" id="saturday2" value="6">
+                          Saturday
+                        </label>
+                        <label>
+                          <input type="checkbox" name="sunday2" id="sunday2" value="1">
+                          Sunday
+                        </label>
+                    </div>
+                    
+                    <!--Date-->
+                    <div class="form-group oneoff2">
+                      <label for="date2" class="sr-only">Date:</label>
+                      <input class="form-control" name="date2" id="date2" readonly="readonly">
+                    </div>
+                    
+                    <!--Time for Regular-->
+                    <div class="form-group regular2 oneoff2 time">
+                      <label for="time2" class="sr-only">Time:</label>
+                      <input class="form-control" type="time" name="time2" id="time2">
+                    </div>
+                    
+                    <!--End-->
+                  </div>
+            
+                  <div class="modal-footer">
+                    <input class="btn purple addtripButton" name="updatetrip" type="submit" value="Edit Trip">
+                    <input class="btn btn-danger" name="deletetrip" value="Delete" id="deletetrip" type="button">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                   </div>
             
