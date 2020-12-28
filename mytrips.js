@@ -50,6 +50,7 @@ $('input[name="date"], input[name="date2"]').datepicker({
     showWeek: true
 });
  var data, departureLongitude, departureLatitude, destinationLongitude, destinationLatitude;
+ 
 // Click on Create Trip Button
 $("#addtripform").submit(function(event){
     //prevent default php processing
@@ -130,6 +131,8 @@ function submitAddTripRequest(){
             if(returnedData){
                 $("#addtripmessage").html(returnedData);
             }else{
+                // hide error message
+                $("#addtripmessage").hide();
                 // hide modal
                 // reset form
                 // load trips
