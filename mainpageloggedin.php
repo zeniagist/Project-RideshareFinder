@@ -62,49 +62,6 @@ $picture = $row['profilepicture'];
               max-width: 100%;
               border-radius: 50%;
             }
-
-          #allNotes, #done, #notepad, .delete{
-            display: none;
-          }
-
-          .buttons{
-            margin-bottom: 20px;
-          }
-
-          textarea{
-            width: 100%;
-            max-width: 100%;
-            min-width: 100%;
-            font-size: 16px;
-            line-height: 1.5em;
-            border-left-width: 20px;
-            border-color: #B2C0B9;
-            color: #B2C0B9;
-            background-color: #FBEFFF;
-            padding: 10px;
-          }
-          
-          .noteheader{
-              border: 1px solid grey;
-              border-radius: 10px;
-              margin-bottom: 10px;
-              cursor: pointer;
-              padding: 0 10px;
-              background: linear-gradient(#FFFFFF, #ECEAE7);
-          }
-          
-          .text{
-              font-size: 20px;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-          }
-          
-          .timetext{
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-          }
         </style>
 
     </head>
@@ -206,6 +163,131 @@ $picture = $row['profilepicture'];
           </div>
         </div>
       </form>
+
+      <!-- Container -->
+      <div class="container" id="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div>
+                    <button type="button" class="btn btn-lg purple" data-toggle="modal" data-target="#addtripModal">
+                        Add Trips
+                    </button>
+                </div>
+                
+                <div id="myTrips" class="trips">
+                    <!--AJAX Call to PHP File-->
+                </div>
+            </div>
+        </div>
+      </div>
+      
+      <!-- Add Trip form -->
+      <form method="post" id="addtripform">
+        <div class="modal" id="addtripModal" role="dialog" aria-labelledby="#myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h4 id="myModalLabel">New Trip:</h4>
+              </div>
+
+              <div class="modal-body">
+                
+              <div id="addtripmessage">
+                <!-- Add trip message from PHP File -->
+              </div>
+                
+                <!--Input Boxes-->
+                <div class="form-group">
+                  <label for="departure" class="sr-only">Departure:</label>
+                  <input class="form-control" type="text" name="departure" id="departure" placeholder="Departure">
+                </div>
+                
+                <div class="form-group">
+                  <label for="destination" class="sr-only">Destination:</label>
+                  <input class="form-control" type="text" name="destination" id="destination" placeholder="Destination">
+                </div>
+                
+                <div class="form-group">
+                  <label for="price" class="sr-only">Price:</label>
+                  <input class="form-control" type="number" name="price" id="price" placeholder="Price">
+                </div>
+                
+                <div class="form-group">
+                  <label for="seatsavailable" class="sr-only">Seats Available:</label>
+                  <input class="form-control" type="number" name="seatsavailable" id="seatsavailable" placeholder="Seats Available">
+                </div>
+                
+                <!--Radios-->
+                <div class="form-group">
+                  <label>
+                      <input type="radio" name="regular" id="yes" value="Y">
+                      Regular
+                  </label>
+                  <label>
+                      <input type="radio" name="oneoff" id="no" value="N">
+                      One-off
+                  </label>
+                </div>
+                
+                <!--Checkboxes-->
+                <div class="checkbox checkbox-inline">
+                    <!--Days of the week-->
+                    <label>
+                      <input type="checkbox" name="monday" id="monday" value="1">
+                      Monday
+                    </label>
+                    <label>
+                      <input type="checkbox" name="tuesday" id="tuesday" value="2">
+                      Tuesday
+                    </label>
+                    <label>
+                      <input type="checkbox" name="wednesday" id="wednesday" value="3">
+                      Wednesday
+                    </label>
+                    <label>
+                      <input type="checkbox" name="thrusday" id="thrusday" value="4">
+                      Thrusday
+                    </label>
+                    <label>
+                      <input type="checkbox" name="friday" id="friday" value="5">
+                      Friday
+                    </label>
+                    <label>
+                      <input type="checkbox" name="saturday" id="saturday" value="6">
+                      Saturday
+                    </label>
+                    <label>
+                      <input type="checkbox" name="sunday" id="sunday" value="1">
+                      Sunday
+                    </label>
+                </div>
+                
+                <!--Date-->
+                <div class="form-group">
+                  <label for="date" class="sr-only">Date:</label>
+                  <input class="form-control" name="date" id="date" readonly="readonly">
+                </div>
+                
+                <!--Time for Regular-->
+                <div class="form-group">
+                  <label for="time" class="sr-only">Time:</label>
+                  <input class="form-control" type="time" name="time" id="time">
+                </div>
+                
+                <!--End-->
+              </div>
+
+              <div class="modal-footer">
+                <input class="btn purple addtripButton" name="addtrip" type="submit" value="Create Trip">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </form>
       
       <!-- Footer -->
       <div class="footer">
@@ -218,14 +300,8 @@ $picture = $row['profilepicture'];
           .</p>
         </div>
       </div>
-
-      <!-- Container -->
-      <div class="container" id="container">
-        <div class="row">
-        </div>
-      </div>
     
-    <script src="notes/mytrips.js"></script>
+    <script src="mytrips.js"></script>
     <script src="profile.js"></script>
     </body>
     
