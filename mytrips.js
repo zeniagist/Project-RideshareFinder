@@ -15,3 +15,13 @@ myRadio.click(function(){
         }
     }
 });
+
+// Calendar
+$('input[name="date"]').datepicker({
+    numberOfMonths: 1,
+    showAnim: "fadeIn",
+    dateFormat: "D M d, yy",
+    minDate: +1,
+    maxDate: "+12M",
+    showWeek: true
+});
