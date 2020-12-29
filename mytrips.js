@@ -1,3 +1,6 @@
+// define variables
+var data, departureLongitude, departureLatitude, destinationLongitude, destinationLatitude, trip;
+
 // get trips
 getTrips();
 
@@ -30,7 +33,7 @@ myRadio.click(function(){
 // **************
 // Edit Trips Radio Buttons
 // **************
-var myRadio = $('input[name="regular2"]');
+myRadio = $('input[name="regular2"]');
 myRadio.click(function(){
     if($(this).is(':checked')){
         if($(this).val() == "Y"){// Regular Commute is selected
@@ -52,7 +55,6 @@ $('input[name="date"], input[name="date2"]').datepicker({
     maxDate: "+12M",
     showWeek: true
 });
- var data, departureLongitude, departureLatitude, destinationLongitude, destinationLatitude;
  
 // Click on Create Trip Button
 $("#addtripform").submit(function(event){
@@ -170,3 +172,33 @@ function getTrips(){
         }
     });
 }
+
+// Click on Edit Trip Button
+    $('#edittripModal').on('show.bs.modal', function (event) {
+        $('#edittripmessage').html("");
+        var $invoker = $(event.relatedTarget);
+        $.ajax({
+                url: "gettripdetails.php",
+                method: "POST",
+                data: {trip_id:$invoker.data('trip_id')},
+                success: function(returnedData){
+                    if(returnedData == "error"){
+                        $('#edittripmessage').html(
+                            "<div class='alert alert-danger'>There was an error with the Edit Message Ajax Call. Please try again later.</div>"
+                        );
+                    }else{
+                        trip = JSON.parse(returnedData);
+                        //fill edit trip form inputs using AJAX returned JSON data
+                        formatModal();
+                    }
+            },
+                error: function(){
+                    $('#edittripmessage').html(
+                        "<div class='alert alert-danger'>There was an error with the Ajax Call. Please try again later.</div>"
+                    );
+                    $('#edittripmessage').hide();
+                    $('#edittripmessage').fadeIn();
+        
+                }
+        });
+    });
