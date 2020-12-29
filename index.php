@@ -151,6 +151,13 @@ include("logout.php");
               <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
                 <h4 id="myModalLabel">Login:</h4>
+                <p style="color:red;">
+                    <strong>
+                        For testing purposes use the following credentials:<br />
+                        Email: username@test.com<br />
+                        Password: Password123
+                    </strong>
+                </p>
               </div>
 
               <div class="modal-body">
@@ -206,6 +213,13 @@ include("logout.php");
               <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
                 <h4 id="myModalLabel">Sign up today and start using Rideshare Finder!</h4>
+                <p style="color:red;">
+                    <strong>
+                        For testing purposes use the following credentials to log in:<br />
+                        Email: username@test.com<br />
+                        Password: Password123
+                    </strong>
+                </p>
               </div>
 
               <div class="modal-body">
