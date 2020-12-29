@@ -1,3 +1,6 @@
+// get trips
+getTrips();
+
 // create a geocoder object to use geocode
 var geocoder = new google.maps.Geocoder();
 
@@ -152,5 +155,18 @@ function submitAddTripRequest(){
 
 // get trips
 function getTrips(){
-    
+    //send to addtrips.php using AJAX
+    $.ajax({
+        url: "gettrips.php",
+        // AJAX Call successful
+        success: function(returnedData){
+            $("#myTrips").html(returnedData);
+        },
+        // AJAX Call fails: show error AJAX Call error
+        error: function(){
+          $("#myTrips").html(
+              "<div class='alert alert-danger'>There was an error with the Get Trips AJAX Call. Please try again later</div>"
+          );
+        }
+    });
 }
