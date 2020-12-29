@@ -95,7 +95,7 @@ $('#edittripModal').on('show.bs.modal', function (event) {
             }
     });
     
-    // Save edits
+    // Submit edit form
     $("#edittripform").submit(function(event){
         // empty error message
         $('#edittripmessage').html("");
@@ -108,6 +108,34 @@ $('#edittripModal').on('show.bs.modal', function (event) {
         
         getEditTripDepartureCoordinates();
         
+    });
+    
+    // Delete a trip
+    $("#deletetrip").click(function(){
+        $invoker = $(event.relatedTarget);
+        // AJAX Call to deletetrips.php
+        $.ajax({
+            url: "deletetrips.php",
+            method: "POST",
+            data: {trip_id:$invoker.data('trip_id')},
+            success: function(returnedData){
+                if(returnedData == "error"){
+                    $('#edittripmessage').html(
+                        "<div class='alert alert-danger'>The trip could not be deleted. Please try again!</div>"
+                    );
+                }else{
+                    // clear edit trips form
+                    $("#edittripModal").modal('hide');
+                    // get trips
+                    getTrips();
+                }
+        },
+            error: function(){
+                $('#edittripmessage').html(
+                    "<div class='alert alert-danger'>There was an error with the Delete Trips Ajax Call. Please try again later.</div>"
+                );
+            }
+        });
     });
 });
 
