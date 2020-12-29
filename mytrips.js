@@ -202,3 +202,34 @@ function getTrips(){
                 }
         });
     });
+
+// Edit Trips Modal
+function formatModal(){
+    $('#departure2').val(trip["departure"]);    
+    $('#destination2').val(trip["destination"]); 
+    $('#price2').val(trip["price"]);    
+    $('#seatsavailable2').val(trip["seatsavailable"]);  
+    // Regular Trip
+    if(trip["regular"] == "Y"){
+        $('#no2').prop('checked', false);
+        $('#yes2').prop('checked', true);
+        $('#monday2').prop('checked', trip["monday"] == "1"? true:false);
+        $('#tuesday2').prop('checked', trip["tuesday"] == "2"? true:false);
+        $('#wednesday2').prop('checked', trip["wednesday"] == "3"? true:false);
+        $('#thursday2').prop('checked', trip["thursday"] == "4"? true:false);
+        $('#friday2').prop('checked', trip["friday"] == "5"? true:false);
+        $('#saturday2').prop('checked', trip["saturday"] == "6"? true:false);
+        $('#sunday2').prop('checked', trip["sunday"] == "7"? true:false);
+        $('input[name="time2"]').val(trip["time"]);
+        $('.oneoff2').hide(); 
+        $('.regular2').show();
+    }else{
+        // One-off Trip
+        $('#yes2').prop('checked', false);
+        $('#no2').prop('checked', true);
+        $('input[name="date2"]').val(trip["date"]);
+        $('input[name="time2"]').val(trip["time"]);
+        $('.regular2').hide(); 
+        $('.oneoff2').show();
+    }
+}
