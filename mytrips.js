@@ -134,8 +134,11 @@ function submitAddTripRequest(){
                 // hide error message
                 $("#addtripmessage").hide();
                 // hide modal
+                $("#addtripModal").modal('hide');
                 // reset form
+                $("#addtripform")[0].reset();
                 // load trips
+                getTrips();
             }
         },
         // AJAX Call fails: show error AJAX Call error
@@ -145,4 +148,9 @@ function submitAddTripRequest(){
           );
         }
     });
+}
+
+// get trips
+function getTrips(){
+    
 }

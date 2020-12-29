@@ -34,7 +34,7 @@ $picture = $row['profilepicture'];
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible"content="IE=edge">
         <meta name="viewport"content="width=device-width, initial-scale=1">
-        <title>My Notes</title>
+        <title>My Trips</title>
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -46,9 +46,6 @@ $picture = $row['profilepicture'];
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
-        
-        <!--jQuery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         
         <!--jQuery UI-->
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/dark-hive/jquery-ui.css">
@@ -206,7 +203,7 @@ $picture = $row['profilepicture'];
                     </button>
                     
                     <button type="button" class="btn btn-lg purple" data-toggle="modal" data-target="#edittripModal">
-                        Edit Trip
+                        Edit
                     </button>
                 </div>
                 <div id="myTrips" class="trips">

@@ -10,6 +10,7 @@ $invalidDeparture = '<p><strong>Please enter a valid departure location!</strong
 $missingDestination = '<p><strong>Please enter your destination!</strong></p>';
 $invalidDestination = '<p><strong>Please enter a valid destination location!</strong></p>';
 $missingPrice = '<p><strong>Please enter the price per seat!</strong></p>';
+$invalidPrice = '<p><strong>Please enter a valid price!</strong></p>';
 $missingSeatsAvailable = '<p><strong>Please enter your how many seats are available for your trip!</strong></p>';
 $missingFrequency = '<p><strong>Please select a trip frequency (Regular or One-off)!</strong></p>';
 $missingDays = '<p><strong>Please select at least one weekday!</strong></p>';
@@ -56,7 +57,7 @@ if(!$destination){
         $errors .= $invalidDestination;  
     }else{
         $destinationLatitude = $_POST["destinationLatitude"];
-        $destinationLatitude = $_POST["destinationLatitude"];
+        $destinationLongitude = $_POST["destinationLongitude"];
         $destination = filter_var($destination, FILTER_SANITIZE_STRING);
     }
 }
@@ -64,6 +65,8 @@ if(!$destination){
 // Get Price
 if(!$price){
     $errors .= $missingPrice; 
+}elseif($price < 0){
+    $errors .= $invalidPrice;
 }else{
     $price = filter_var($price, FILTER_SANITIZE_STRING);
 }
@@ -101,3 +104,41 @@ if($errors){
     echo $resultMessage;
     exit;
 }
+    //prepare variables to the query
+    $departure = mysqli_real_escape_string($link, $departure);
+    $destination = mysqli_real_escape_string($link, $destination);
+    $tblName = 'carsharetrips';
+    $user_id = $_SESSION['user_id'];
+    
+    if($regular == "Y"){
+        // query for regular trip
+        $sql = "INSERT INTO $tblName 
+                (user_id, departure, departureLongitude, departureLatitude, destination, destinationLongitude, destinationLatitude, price, seatsavailable,
+                regular, date, time, monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+                VALUES 
+                ('$user_id', '$departure', '$departureLongitude', '$departureLatitude', '$destination', '$destinationLongitude', '$destinationLatitude', 
+                '$price', '$seatsavailable', '$regular', '', '$time', '$monday', '$tuesday', '$wednesday', '$thrusday', '$friday', '$saturday', '$sunday')
+                ";
+        
+    }else{
+        // query for one-ff trip
+        $sql = "INSERT INTO $tblName 
+                (user_id, departure, departureLongitude, departureLatitude, destination, destinationLongitude, destinationLatitude, price, seatsavailable,
+                regular, date, time, monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+                VALUES 
+                ('$user_id', '$departure', '$departureLongitude', '$departureLatitude', '$destination', '$destinationLongitude', '$destinationLatitude', 
+                '$price', '$seatsavailable', '$regular', '$date', '$time', '', '', '', '', '', '', '')
+                ";
+    }
+    
+    $result = mysqli_query($link, $sql);
+    if(!$result){
+      echo '<div class="alert alert-danger">Error running the query!</div>';
+      exit;
+    }
+    $count = mysqli_num_rows($result);
+    
+    if($count){
+      echo '<div class="alert alert-danger">There was an error! The trip could not be added to the database!</div>';
+      exit;
+    }
