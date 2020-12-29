@@ -18,10 +18,10 @@ var myRadio = $('input[name="regular"]');
 myRadio.click(function(){
     if($(this).is(':checked')){
         if($(this).val() == "Y"){// Regular Commute is selected
-            $(".oneoff").hide();
+            // $(".oneoff").hide();
             $(".regular").show();
         }else{// One-off Commute is selected
-            $(".regular").hide();
+            // $(".regular").hide();
             $(".oneoff").show();
         }
     }
@@ -32,11 +32,14 @@ myRadio = $('input[name="regular2"]');
 myRadio.click(function(){
     if($(this).is(':checked')){
         if($(this).val() == "Y"){// Regular Commute is selected
-            $(".oneoff2").hide();
+            
             $(".regular2").show();
+            $("#date2").hide();
         }else{// One-off Commute is selected
             $(".regular2").hide();
             $(".oneoff2").show();
+            $("#date2").show();
+            $("#time2").show();
         }
     }
 });
