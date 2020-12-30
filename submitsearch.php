@@ -221,10 +221,37 @@ while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             if($row['sunday']==7){array_push($array,"Sun");}
         $time = implode("-", $array)." at " .$row['time'];
     }
+    
     $departure = $row['departure'];
     $destination = $row['destination'];
     $price = $row['price'];
     $seatsavailable = $row['seatsavailable'];
+    
+    // get user_id
+    $person_id = $row['user_id'];
+    
+    // run query to get user details
+    $sql2 = "SELECT * FROM users 
+            WHERE user_id='$person_id'
+            LIMIT 1
+            ";
+    // run query to file
+    $result2 = mysqli_query($link, $sql);
+    if(!$result2){
+      echo '<div class="alert alert-danger">Unable to execute a query looking for users in the users table</div>';
+      exit;
+    }
+    
+    // check table for users
+    $row2 = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    $first_name = $row2['first_name'];
+    $gender = $row2['gender'];
+    $moreinformation = $row2['moreinformation'];
+    $profilepicture = $row2['profilepicture'];
+    $phonenumber = $row2['phonenumber'];
+    
+    // print trip
+    echo "hello";
 }
 
 echo '</div>';
