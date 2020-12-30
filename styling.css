@@ -54,15 +54,7 @@ body{
 }
 
 /*Search Results Message*/
-.noresults{
-    text-align: center;
-}
 
-.resultsFound{
-    background-color: rgba(99,44,33, 1);
-    color: white;
-    font-size: 1.5em;
-}
 /* Navigation bar */
 #custom-bootstrap-menu.navbar-default .navbar-brand, .footer {
     color: rgba(255, 255, 255, 1);
