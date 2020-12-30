@@ -159,14 +159,73 @@ if($destinationLngOutOfRange){
   $sql .= " AND (destinationLongitude BETWEEN '$minLongitudeDestination' AND '$maxLongitudeDestination')"; 
 }
 
-// // destination Latitude
+// destination Latitude
  $sql .= " AND (destinationLatitude BETWEEN '$minLatitudeDestination' AND '$maxLatitudeDestination')";
  
+//  Do not display current user
+// $user_id = $_SESSION['user_id'];
+// $sql .= " WHERE user_id!='$user_id'";
+ 
 $result = mysqli_query($link, $sql);
-    if(!$result){
-      echo '<div class="alert alert-danger">Error running the query!</div>';
-      exit;
+if(!$result){
+  echo '<div class="alert alert-danger">Unable to execute the search radius query</div>';
+  exit;
+}
+
+// No trips in the search radius
+if(mysqli_num_rows($result) == 0){
+    echo '<div class="alert alert-warning noresults"><strong>There are no journeys matching your search</strong></div>';
+    exit;
+}
+
+// Message with destination and daparture message that trips were found
+echo '<div class="alert resultsFound">
+        From ' . $departure . ' to '. $destination . '<br /><br />Closest Journeys:
+      </div>';
+
+// Trips found in search radius
+echo '<div id="searchResultsDiv">';
+
+while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+    // get trip details
+    //check frequency
+    if($row['regular']=="N"){
+        // one-off journey
+        $frequency = "One-off journey";
+        $time = $row['date']." at " .$row['time'];
+        
+        // date of trip
+        $source = $row['date'];
+        // date is in same format as today's date
+        $tripDate = DateTime::createFromFormat('D M d, Y', $source);
+        
+        // today's date
+        $today = date('D M d, Y');
+        // today's date is in same format as date
+        $todayDate = DateTime::createFromFormat('D M d, Y', $today);
+        
+        // compate today's date with date of trip
+        if($tripDate > $todayDate){
+            // go to next trip
+            continue;
+        }
+    }else{
+        $frequency = "Regular Journey"; 
+        $array = [];
+            if($row['monday']==1){array_push($array,"Mon");}
+            if($row['tuesday']==2){array_push($array,"Tue");}
+            if($row['wednesday']==3){array_push($array,"Wed");}
+            if($row['thursday']==4){array_push($array,"Thu");}
+            if($row['friday']==5){array_push($array,"Fri");}
+            if($row['saturday']==6){array_push($array,"Sat");}
+            if($row['sunday']==7){array_push($array,"Sun");}
+        $time = implode("-", $array)." at " .$row['time'];
     }
+    $departure = $row['departure'];
+    $destination = $row['destination'];
+    $price = $row['price'];
+    $seatsavailable = $row['seatsavailable'];
+}
 
-
+echo '</div>';
 ?>
