@@ -59,29 +59,6 @@ $searchRadius = 10; // 10 miles
 // longitude out of range
 $departureLngOutOfRange = false;
 
-// Departure Longitude
-$deltaLongitudeDeparture = ($searchRadius * 360)/(24901*cos(deg2rad($departureLatitude)));
-
-// min Departure Longitude
-$minLongitudeDeparture = $departureLongitude - $deltaLongitudeDeparture;
-if($minLongitudeDeparture < -180){
-    $departureLngOutOfRange = true;
-    $minLongitudeDeparture += 360;
-}
-
-// max Departure Longitude
-$maxLongitudeDeparture = $departureLongitude + $deltaLongitudeDeparture;
-if($maxLongitudeDeparture > 180){
-    $departureLngOutOfRange = true;
-    $minLongitudeDeparture -= 360;
-}
-
-// ******
-// Departure Longitude
-// *******
-// longitude out of range
-$departureLngOutOfRange = false;
-
 // Departure Longitude Tolerance
 $deltaLongitudeDeparture = ($searchRadius * 360)/(24901*cos(deg2rad($departureLatitude)));
 
@@ -96,7 +73,7 @@ if($minLongitudeDeparture < -180){
 $maxLongitudeDeparture = $departureLongitude + $deltaLongitudeDeparture;
 if($maxLongitudeDeparture > 180){
     $departureLngOutOfRange = true;
-    $minLongitudeDeparture -= 360;
+    $maxLongitudeDeparture -= 360;
 }
 
 // ******
@@ -119,7 +96,7 @@ if($minLongitudeDestination < -180){
 $maxLongitudeDestination = $destinationLongitude + $deltaLongitudeDeparture;
 if($maxLongitudeDestination > 180){
     $destinationLngOutOfRange = true;
-    $minLongitudeDestination -= 360;
+    $maxLongitudeDestination -= 360;
 }
 
 // ******
@@ -132,7 +109,6 @@ $deltaLatitudeDeparture = $searchRadius*180/12430;
 // min Departure Latitude
 $minLatitudeDeparture = $departureLatitude - $deltaLatitudeDeparture;
 if($minLatitudeDeparture < -90){
-    $departureLatOutOfRange = true;
     $minLatitudeDeparture = -90;
 }
 
@@ -158,14 +134,39 @@ if($minLatitudeDestination < -90){
 // max Destination Latitude
 $maxLatitudeDestination = $destinationLatitude + $deltaLatitudeDestination;
 if($maxLatitudeDestination > 90){
-    $destinationLatOutOfRange = true;
     $maxLatitudeDestination = 90;
 }
 
 // build query
+$sql = "SELECT * FROM carsharetrips WHERE";
 
+// departure Longitude
+if($departureLngOutOfRange){
+    $sql .= " ((departureLongitude > '$minLongitudeDeparture') 
+                OR (departureLongitude > '$maxLongitudeDeparture'))";
+}else{
+   $sql .= " (departureLongitude BETWEEN '$minLongitudeDeparture' AND '$maxLongitudeDeparture')"; 
+}
 
+// departure Latitude
+ $sql .= " AND (departureLatitude BETWEEN '$minLatitudeDeparture' AND '$maxLatitudeDeparture')";
+ 
+  //destination Longitude
+if($destinationLngOutOfRange){
+    $sql .= " AND ((destinationLongitude > '$minLongitudeDestination') 
+                OR (destinationLongitude > '$maxLongitudeDestination'))";
+}else{
+  $sql .= " AND (destinationLongitude BETWEEN '$minLongitudeDestination' AND '$maxLongitudeDestination')"; 
+}
 
+// // destination Latitude
+ $sql .= " AND (destinationLatitude BETWEEN '$minLatitudeDestination' AND '$maxLatitudeDestination')";
+ 
+$result = mysqli_query($link, $sql);
+    if(!$result){
+      echo '<div class="alert alert-danger">Error running the query!</div>';
+      exit;
+    }
 
 
 ?>
