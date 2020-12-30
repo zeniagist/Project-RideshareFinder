@@ -1,172 +1,253 @@
 <?php
-//Start session
+//start session and connect to database
 session_start();
-//Connect to the database
-include("connection.php");
+include('connection.php');
 
-//Define error messages
-$missingDeparture = '<p><strong>Please enter your departure!</strong></p>';
-$invalidDeparture = '<p><strong>Please enter a valid departure location!</strong></p>';
-$missingDestination = '<p><strong>Please enter your destination!</strong></p>';
-$invalidDestination = '<p><strong>Please enter a valid destination location!</strong></p>';
+//define error messages
+$missingdeparture = '<p><strong>Please enter your departure!</strong></p>';
+$invaliddeparture = '<p><strong>Please enter a valid departure!</strong></p>';
+$missingdestination = '<p><strong>Please enter your destination!</strong></p>';
+$invaliddestination = '<p><strong>Please enter a valid destination!</strong></p>';
 
-// Get inputs
+//Get inputs:
 $departure = $_POST["departure"];
 $destination = $_POST["destination"];
 
-//Get departure
-if(!$departure){
-    $errors .= $missingDeparture;   
+//check coordinates
+if(!isset($_POST["departureLatitude"]) or !isset($_POST["departureLongitude"])){
+    $errors .= $invaliddeparture;   
 }else{
-    // check coordinates
-    if(!$_POST["departureLatitude"] OR !$_POST["departureLongitude"]){
-        $errors .= $invalidDeparture;  
-    }else{
-        $departureLatitude = $_POST["departureLatitude"];
-        $departureLongitude = $_POST["departureLongitude"];
-        $departure = filter_var($departure, FILTER_SANITIZE_STRING);
-    }
+    $departureLatitude = $_POST["departureLatitude"];
+    $departureLongitude = $_POST["departureLongitude"];
 }
 
-//Get destination
-if(!$destination){
-    $errors .= $missingDestination;   
+if(!isset($_POST["destinationLatitude"]) or !isset($_POST["destinationLongitude"])){
+    $errors .= $invaliddestination;   
 }else{
-    // check coordinates
-    if(!$_POST["destinationLatitude"] OR !$_POST["destinationLatitude"]){
-        $errors .= $invalidDestination;  
-    }else{
-        $destinationLatitude = $_POST["destinationLatitude"];
-        $destinationLongitude = $_POST["destinationLongitude"];
-        $destination = filter_var($destination, FILTER_SANITIZE_STRING);
-    }
+    $destinationLatitude = $_POST["destinationLatitude"];
+    $destinationLongitude = $_POST["destinationLongitude"];
 }
 
-//If there are any errors
-if($errors){
-    //print error message
-    $resultMessage = '<div class="alert alert-danger">' . $errors .'</div>';
-    echo $resultMessage;
-    exit;
-}
+//set search radius - in miles
+$searchRadius = 100000000;
 
-// set search radius
-$searchRadius = 10; // 10 miles
-
-// ******
-// Departure Longitude
-// *******
-// longitude out of range
-$departureLngOutOfRange = false;
-
-// Departure Longitude Tolerance
-$deltaLongitudeDeparture = ($searchRadius * 360)/(24901*cos(deg2rad($departureLatitude)));
-
-// min Departure Longitude
+//min max Departure Longitude
+$deltaLongitudeDeparture = $searchRadius*360/(24901*cos(deg2rad($departureLatitude)));
 $minLongitudeDeparture = $departureLongitude - $deltaLongitudeDeparture;
 if($minLongitudeDeparture < -180){
-    $departureLngOutOfRange = true;
     $minLongitudeDeparture += 360;
 }
-
-// max Departure Longitude
 $maxLongitudeDeparture = $departureLongitude + $deltaLongitudeDeparture;
 if($maxLongitudeDeparture > 180){
-    $departureLngOutOfRange = true;
     $maxLongitudeDeparture -= 360;
 }
 
-// ******
-// Destination Longitude
-// *******
-// longitude out of range
-$destinationLngOutOfRange = false;
-
-// Destination Longitude Tolerance
-$deltaLongitudeDestination = ($searchRadius * 360)/(24901*cos(deg2rad($destinationLatitude)));
-
-// min Destination Longitude
-$minLongitudeDestination = $destinationLongitude - $deltaLongitudeDeparture;
+//min max Destination Longitude
+$deltaLongitudeDestination = $searchRadius*360/(24901*cos(deg2rad($destinationLatitude)));
+$minLongitudeDestination = $destinationLongitude - $deltaLongitudeDestination;
 if($minLongitudeDestination < -180){
-    $destinationLngOutOfRange = true;
     $minLongitudeDestination += 360;
 }
-
-// max Destination Longitude
-$maxLongitudeDestination = $destinationLongitude + $deltaLongitudeDeparture;
+$maxLongitudeDestination = $destinationLongitude + $deltaLongitudeDestination;
 if($maxLongitudeDestination > 180){
-    $destinationLngOutOfRange = true;
     $maxLongitudeDestination -= 360;
 }
 
-// ******
-// Departure Latitude
-// *******
-
-// Departure Latitude Tolerance
+//min max Departure Latitude
 $deltaLatitudeDeparture = $searchRadius*180/12430;
-
-// min Departure Latitude
 $minLatitudeDeparture = $departureLatitude - $deltaLatitudeDeparture;
 if($minLatitudeDeparture < -90){
     $minLatitudeDeparture = -90;
 }
-
-// max Departure Latitude
 $maxLatitudeDeparture = $departureLatitude + $deltaLatitudeDeparture;
 if($maxLatitudeDeparture > 90){
     $maxLatitudeDeparture = 90;
 }
 
-// ******
-// Destination Latitude
-// *******
-
-// Destination Latitude Tolerance
+//min max Destination Latitude
 $deltaLatitudeDestination = $searchRadius*180/12430;
-
-// min Destination Latitude
 $minLatitudeDestination = $destinationLatitude - $deltaLatitudeDestination;
 if($minLatitudeDestination < -90){
     $minLatitudeDestination = -90;
 }
-
-// max Destination Latitude
 $maxLatitudeDestination = $destinationLatitude + $deltaLatitudeDestination;
 if($maxLatitudeDestination > 90){
     $maxLatitudeDestination = 90;
 }
 
-// build query
-$sql = "SELECT * FROM carsharetrips WHERE";
-
-// departure Longitude
-if($departureLngOutOfRange){
-    $sql .= " ((departureLongitude > '$minLongitudeDeparture') 
-                OR (departureLongitude > '$maxLongitudeDeparture'))";
+//Check departure:
+if(!$departure){
+    $errors .= $missingdeparture;   
 }else{
-   $sql .= " (departureLongitude BETWEEN '$minLongitudeDeparture' AND '$maxLongitudeDeparture')"; 
+    $departure = filter_var($departure, FILTER_SANITIZE_STRING); 
 }
 
-// departure Latitude
- $sql .= " AND (departureLatitude BETWEEN '$minLatitudeDeparture' AND '$maxLatitudeDeparture')";
- 
-  //destination Longitude
-if($destinationLngOutOfRange){
-    $sql .= " AND ((destinationLongitude > '$minLongitudeDestination') 
-                OR (destinationLongitude > '$maxLongitudeDestination'))";
+//Check destination:
+if(!$destination){
+    $errors .= $missingdestination;   
 }else{
-  $sql .= " AND (destinationLongitude BETWEEN '$minLongitudeDestination' AND '$maxLongitudeDestination')"; 
+    $destination = filter_var($destination, FILTER_SANITIZE_STRING); 
 }
 
-// // destination Latitude
- $sql .= " AND (destinationLatitude BETWEEN '$minLatitudeDestination' AND '$maxLatitudeDestination')";
- 
+//if there is an error print error message
+if($errors){
+    $resultMessage = '<div class=" alert alert-danger">' . $errors . '</div>';
+    echo $resultMessage; exit;
+}
+
+//get all available trips in the carsharetrips table
+// $myArray = [$minLongitudeDeparture < $maxLongitudeDeparture, $minLatitudeDeparture < $maxLatitudeDeparture, $minLongitudeDestination < $maxLongitudeDestination, $minLatitudeDestination < $maxLatitudeDestination];
+
+// $queryChoice1 = [
+//     " (departureLongitude BETWEEN $minLongitudeDeparture AND $maxLongitudeDeparture)",
+//     " AND (departureLatitude BETWEEN $minLatitudeDeparture AND $maxLatitudeDeparture)",
+//     " AND (destinationLongitude BETWEEN $minLongitudeDestination AND $maxLongitudeDestination)",
+//     " AND (destinationLatitude BETWEEN $minLatitudeDestination AND $maxLatitudeDestination)"
+// ];
+
+// $queryChoice2 = [
+//     " ((departureLongitude > $minLongitudeDeparture) OR (departureLongitude < $maxLongitudeDeparture))",
+//     " AND (departureLatitude BETWEEN $minLatitudeDeparture AND $maxLatitudeDeparture)",
+//     " AND ((destinationLongitude > $minLongitudeDestination) OR (destinationLongitude < $maxLongitudeDestination))",
+//     " AND (destinationLatitude BETWEEN $minLatitudeDestination AND $maxLatitudeDestination)"
+// ];
+
+// $queryChoices = [$queryChoice2, $queryChoice1];
+
+$sql = "SELECT * FROM carsharetrips";
+
+for ($value=0; $value<4; $value++) {
+    $index = $myArray[$value];
+    // $sql .= $queryChoices[$index][$value];
+}
+
 $result = mysqli_query($link, $sql);
-    if(!$result){
-      echo '<div class="alert alert-danger">Error running the query!</div>';
-      exit;
+if(!$result){
+    echo "ERROR: Unable to excecute: $sql. " . mysqli_error($link); exit;   
+}
+
+if(mysqli_num_rows($result) == 0){
+    echo "<div class='alert alert-info noresults'>There are no journeys matching your search!</div>";
+    exit;
+}
+
+echo "<div class='alert resultsFound'>From $departure to $destination.<br />All Available Rideshares:</div>";            
+echo '<div id="tripResults">'; 
+
+//cycle through trips and find close ones
+
+//retrieve each row in $result
+while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+    //get trip user id
+    $person_id = $row['user_id'];
+    
+    //run query to get user details
+    $sql2="SELECT * FROM users WHERE user_id='$person_id' LIMIT 1";
+    $result2 = mysqli_query($link, $sql2);
+    
+    if($result2){
+        
+        //get user details
+        $row2 = mysqli_fetch_array($result2);
+        
+        //Get phone number:
+        if($_SESSION['user_id']){
+         $phonenumber = $row2['phonenumber'];   
+        }else{
+         $phonenumber = "Please sign up! Only members have access to contact information.";   
+        }
+        //get picture
+        $picture = $row2['profilepicture'];
+        //get firstname
+        $firstname = $row2['first_name'];
+        
+        //more information
+        $moreInformation = $row2['moreinformation'];
+        
+        //get trip departure
+        $tripDeparture = $row['departure'];
+        
+        //get trip destination
+        $tripDestination = $row['destination'];
+        
+        //get trip price
+        $tripPrice = $row['price'];
+        
+        //get seats available in the trip
+        $seatsAvailable = $row['seatsavailable'];
+        
+        //Get trip frequency and time:
+        if($row['regular']=="N"){
+            $frequency = "One-off journey.";
+            $time = $row['date']." at " .$row['time'].".";
+        }else{
+            $frequency = "Regular.";
+            $weekdays=['monday'=>'Mon','tuesday'=>'Tue','wednesday'=>'Wed','thursday'=>'Thu','friday'=>'Fri','saturday'=>'Sat','sunday'=>'Sun'];
+            $array = [];
+            foreach($weekdays  as $key => $value){
+                if($row[$key]==1){
+                    array_push($array,$value);
+                }
+                $time = implode("-", $array)." at " .$row['time'].".";
+            }
+        }
+        
+        //print trip
+        echo 
+         "<h4 class='row'>
+            <div class='col-sm-2 journey'>
+                <div class='driver'>$firstname
+                </div>
+                <div>
+                    <img class='previewing responsive' src='$picture' />
+                </div>
+            </div>
+
+            <div class='col-sm-8 journey'>
+                <div>
+                    <span class='departure'>Departure:
+                    </span> 
+                    $tripDeparture.
+                </div>
+                <div>
+                    <span class='destination'>Destination:
+                    </span> 
+                    $tripDestination.
+                </div>
+                <div class='time'>
+                    $time
+                </div>
+                <div>
+                    $frequency
+                </div>
+            </div>
+
+            <div class='col-sm-2 price journey2'>
+                <div class='price'>
+                    $$tripPrice
+                </div>
+
+                <div class='perseat'>
+                    Per Seat
+                </div>
+                <div class='seatsavailable'>
+                    $seatsAvailable left
+                </div>
+            </div>
+        </h4>";
+        
+        echo 
+        "<div class='moreinfo'>
+            <div>
+                <div class='telephone'>
+                    &#9742: $phonenumber
+                </div>
+            </div>
+            <div class='aboutme'> 
+                About me: $moreInformation
+            </div>
+        </div>";
     }
-
-
-?>
+    
+}
+echo "</div>";

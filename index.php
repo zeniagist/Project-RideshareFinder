@@ -29,15 +29,12 @@ include("logout.php");
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
-        
-        <!--Google Maps API-->
-        <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>-->
+        <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">ZVQmBvjo&libraries=places"></script>-->
         
         <style>
             /*Container*/
             #myContainer{
-                margin-top: 30px;
+                margin-top: 50px;
                 text-align: center;
                 color: white;
             }
@@ -64,6 +61,15 @@ include("logout.php");
             
             .signupButton{
                 color: white;
+            }
+            
+            /*Search Query*/
+            h1{
+                font-size: 4em;
+            }
+            
+            .btn{
+                border: none;
             }
         </style>
 
@@ -110,22 +116,26 @@ include("logout.php");
                     <form class="form-inline" method="get" id="searchForm">
                         <div class="form-group">
                             <!--Departure-->
-                            <label for="departure" class="sr-only">Departure</label>
-                            <input type="text" placeholder="Departure" name="departure" id="departure">
+                            <!--<label for="departure" class="sr-only">Departure</label>-->
+                            <!--<input type="text" placeholder="Departure" name="departure" id="departure">-->
                             
                             <!--Destination-->
-                            <label for="destination" class="sr-only">Destination</label>
-                            <input type="text" placeholder="Destination" name="destination" id="destination">
+                            <!--<label for="destination" class="sr-only">Destination</label>-->
+                            <!--<input type="text" placeholder="Destination" name="destination" id="destination">-->
                         </div>
+                        
+                        <!--Search Button-->
+                        <!--<input type="submit" value="Search" class="btn btn-lg purple" name="search" id="searchBtn">-->
                     </form>
-                    <!--Search Button-->
-                    <input type="submit" value="Search" class="btn btn-lg purple" name="search" id="searchBtn"onclick="calcRoute();">
                     
                     <!--Google Map-->
                     <div id="googleMap"></div>
                     
                     <!--Sign up button-->
                     <button class="btn btn-lg purple signupButton" id="signup"data-toggle="modal" data-target="#signupModal">Sign up-It's free!</button>
+                    
+                    <!--Trips Search-->
+                    <!--<div id="searchResults2"></div>-->
                 </div>
             </div>
         </div>
@@ -153,7 +163,6 @@ include("logout.php");
                 <h4 id="myModalLabel">Login:</h4>
                 <p style="color:red;">
                     <strong>
-                        For testing purposes use the following credentials:<br />
                         Email: username@test.com<br />
                         Password: Password123
                     </strong>
@@ -215,9 +224,8 @@ include("logout.php");
                 <h4 id="myModalLabel">Sign up today and start using Rideshare Finder!</h4>
                 <p style="color:red;">
                     <strong>
-                        For testing purposes use the following credentials to log in:<br />
-                        Email: username@test.com<br />
-                        Password: Password123
+                        All inputs are required.<br /><br />
+                        If you wish to log in without registering, please use login credentials provided in the Login Modal.
                     </strong>
                 </p>
               </div>
@@ -322,7 +330,21 @@ include("logout.php");
           </div>
         </div>
       </form>     
-    
+    <!--Search Form-->
+    <form class="form-inline" method="get" id="searchForm2">
+        <div class="form-group">
+            <!--Departure-->
+            <label for="departure" class="sr-only">Departure</label>
+            <input type="text" placeholder="Departure" name="departure" id="departure">
+            
+            <!--Destination-->
+            <label for="destination" class="sr-only">Destination</label>
+            <input type="text" placeholder="Destination" name="destination" id="destination">
+        </div>
+        <!--Search Button-->
+    <input type="submit" value="Search" class="btn btn-lg purple" name="search">
+    </form>
+                    
     <!--Google Map API-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>
       <script src="javascript.js"></script>
