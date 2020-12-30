@@ -77,12 +77,35 @@ if($maxLongitudeDeparture > 180){
 }
 
 // ******
+// Departure Longitude
+// *******
+// longitude out of range
+$departureLngOutOfRange = false;
+
+// Departure Longitude Tolerance
+$deltaLongitudeDeparture = ($searchRadius * 360)/(24901*cos(deg2rad($departureLatitude)));
+
+// min Departure Longitude
+$minLongitudeDeparture = $departureLongitude - $deltaLongitudeDeparture;
+if($minLongitudeDeparture < -180){
+    $departureLngOutOfRange = true;
+    $minLongitudeDeparture += 360;
+}
+
+// max Departure Longitude
+$maxLongitudeDeparture = $departureLongitude + $deltaLongitudeDeparture;
+if($maxLongitudeDeparture > 180){
+    $departureLngOutOfRange = true;
+    $minLongitudeDeparture -= 360;
+}
+
+// ******
 // Destination Longitude
 // *******
 // longitude out of range
 $destinationLngOutOfRange = false;
 
-// Destination Longitude
+// Destination Longitude Tolerance
 $deltaLongitudeDestination = ($searchRadius * 360)/(24901*cos(deg2rad($destinationLatitude)));
 
 // min Destination Longitude
@@ -99,8 +122,47 @@ if($maxLongitudeDestination > 180){
     $minLongitudeDestination -= 360;
 }
 
+// ******
+// Departure Latitude
+// *******
 
+// Departure Latitude Tolerance
+$deltaLatitudeDeparture = $searchRadius*180/12430;
 
+// min Departure Latitude
+$minLatitudeDeparture = $departureLatitude - $deltaLatitudeDeparture;
+if($minLatitudeDeparture < -90){
+    $departureLatOutOfRange = true;
+    $minLatitudeDeparture = -90;
+}
+
+// max Departure Latitude
+$maxLatitudeDeparture = $departureLatitude + $deltaLatitudeDeparture;
+if($maxLatitudeDeparture > 90){
+    $maxLatitudeDeparture = 90;
+}
+
+// ******
+// Destination Latitude
+// *******
+
+// Destination Latitude Tolerance
+$deltaLatitudeDestination = $searchRadius*180/12430;
+
+// min Destination Latitude
+$minLatitudeDestination = $destinationLatitude - $deltaLatitudeDestination;
+if($minLatitudeDestination < -90){
+    $minLatitudeDestination = -90;
+}
+
+// max Destination Latitude
+$maxLatitudeDestination = $destinationLatitude + $deltaLatitudeDestination;
+if($maxLatitudeDestination > 90){
+    $destinationLatOutOfRange = true;
+    $maxLatitudeDestination = 90;
+}
+
+// build query
 
 
 
