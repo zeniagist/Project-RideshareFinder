@@ -132,7 +132,7 @@ if(mysqli_num_rows($result) == 0){
 }
 
 echo "<div class='alert resultsFound'>From $departure to $destination.<br />All Available Rideshares:</div>";            
-echo '<div id="message">'; 
+echo '<div id="tripResults">'; 
 
 //cycle through trips and find close ones
 

@@ -91,6 +91,10 @@ $picture = $row['profilepicture'];
                 background-color: rgba(20, 20, 20, 0.5);
                 color: rgba(255, 255, 255, 1);
             }
+            #searchResults{
+                margin-bottom: 100px;
+                margin-top: 20px;
+            }
             .noresults{
                 text-align: center;
             }
@@ -224,7 +228,7 @@ $picture = $row['profilepicture'];
                 if(!file_exists($picture) || $picture == '' ){
                     echo "<img src='https://cdn.pixabay.com/photo/2017/01/06/05/28/car-1957037_960_720.jpg' class='preview2' id='preview2'>";
                 }else{
-                    echo "<img src='$picture' class='preview2' id='preview2'>";
+                    echo "<img src='$picture' class='preview2' id='preview2' class='responsive'>";
                 }
                 ?>
               </div>
