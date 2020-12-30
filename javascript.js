@@ -165,6 +165,12 @@ function submitSearchRequest(){
         // AJAX Call successful
         success: function(returnedData){
             $("#searchResults").html(returnedData);
+            $("#tripResults").accordion({
+                active: false,
+                collapsible: true,
+                heightStyle: "content",
+                icons: false
+            });
         },
         // AJAX Call fails: show error AJAX Call error
         error: function(){
