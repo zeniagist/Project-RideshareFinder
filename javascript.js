@@ -7,6 +7,10 @@ var geocoder = new google.maps.Geocoder();
 //Ajax Call for the sign up form 
 //Once the form is submitted
 $("#signupform").submit(function(event){
+    // show spinner
+    $("#spinner").show();
+    // hide results
+    $("#signupmessage").hide();
   //prevent default php processing
   event.preventDefault();
 
@@ -22,11 +26,18 @@ $("#signupform").submit(function(event){
     // AJAX Call successful
     success: function(data){
       if(data){
+         // hide spinner
+        $("#spinner").hide();
         $("#signupmessage").html(data);
+        
+        // show results
+        $("#signupmessage").slideDown();
       }
     },
     // AJAX Call fails: show error AJAX Call error
     error: function(){
+        // hide spinner
+        $("#spinner").hide();
       $("#signupmessage").html("<div class='alert alert-danger'>There was an error with the AJAX Call. Please try again later</div>");
     }
   });
@@ -34,6 +45,11 @@ $("#signupform").submit(function(event){
 
 // AJAX Call for the login form
 $("#loginform").submit(function(event){
+    // show spinner
+    $("#spinner").show();
+    // hide results
+    $("#loginMessage").hide();
+    
   //prevent default php processing
   event.preventDefault();
 
@@ -50,11 +66,18 @@ $("#loginform").submit(function(event){
       if(data == "success"){
         window.location = "search.php";
       }else{
+          // hide spinner
+        $("#spinner").hide();
         $('#loginMessage').html(data);
+        
+        // show results
+        $("#loginMessage").slideDown();
       }
     },
     // AJAX Call fails: show error AJAX Call error
     error: function(){
+        // hide spinner
+        $("#spinner").hide();
       $("#loginMessage").html("<div class='alert alert-danger'>There was an error with the AJAX Call. Please try again later</div>");
     }
   });
@@ -62,6 +85,11 @@ $("#loginform").submit(function(event){
         
 // AJAX Call for the forgot password form
 $("#forgotpasswordform").submit(function(event){
+    // show spinner
+    $("#spinner").show();
+    // hide results
+    $("#forgotpasswordmessage").hide();
+    
   //prevent default php processing
   event.preventDefault();
 
@@ -74,10 +102,17 @@ $("#forgotpasswordform").submit(function(event){
     data: datatopost,
     // AJAX Call successful
     success: function(data){
+        // hide spinner
+        $("#spinner").hide();
       $('#forgotpasswordmessage').html(data);
+      
+      // show results
+        $("#forgotpasswordmessage").slideDown();
     },
     // AJAX Call fails: show error AJAX Call error
     error: function(){
+        // hide spinner
+        $("#spinner").hide();
       $("#forgotpasswordmessage").html("<div class='alert alert-danger'>There was an error with the AJAX Call. Please try again later</div>");
     }
   });
