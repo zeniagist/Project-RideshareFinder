@@ -95,14 +95,11 @@ $picture = $row['profilepicture'];
                 margin-bottom: 100px;
                 margin-top: 20px;
             }
-            .noresults{
+            .noresults, .resultsFound{
                 text-align: center;
-            }
-            
-            .resultsFound{
-                background-color: rgba(99,44,33, 1);
+                background-color: rgba(99,44,33, 0.8);
                 color: white;
-                font-size: 1.5em;
+                font-size: 1.5em
             }
             .journey{
                 text-align:left; 
