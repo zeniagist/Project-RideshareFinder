@@ -13,8 +13,6 @@ include('connection.php');
 //Store them in two variables
 $user_id = $_POST['user_id'];
 $key = $_POST['key'];
-echo $user_id;
-echo $key;
 // define time variable: now minus 24 hours
 $time = time() - 86400;
 
@@ -22,7 +20,7 @@ $time = time() - 86400;
 $user_id = mysqli_real_escape_string($link, $user_id);
 $key = mysqli_real_escape_string($link, $key);
 // Run query: check combination of user_id & key exists and less than 24 hour old
-$sql = "SELECT user_id FROM forgotpassword WHERE user_id='28' AND time > '$time'";
+$sql = "SELECT user_id FROM forgotpassword WHERE user_id='$user_id' AND time > '$time'";
 $result = mysqli_query($link, $sql);
 
 if(!$result){
