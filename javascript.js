@@ -85,6 +85,9 @@ $("#forgotpasswordform").submit(function(event){
 
 // Search Button
 $("#searchForm").submit(function(event){
+    // show spinner
+    $("#spinner").show();
+    
     //prevent default php processing
     event.preventDefault();
     
@@ -164,6 +167,9 @@ function submitSearchRequest(){
         data: data,
         // AJAX Call successful
         success: function(returnedData){
+            // hide spinner
+            $("#spinner").hide();
+            
             $("#searchResults").html(returnedData);
             $("#tripResults").accordion({
                 active: false,
@@ -174,6 +180,8 @@ function submitSearchRequest(){
         },
         // AJAX Call fails: show error AJAX Call error
         error: function(){
+            // hide spinner
+            $("#spinner").hide();
           $("#searchResults").html(
               "<div class='alert alert-danger'>There was an error with the Search AJAX Call. Please try again later</div>"
           );

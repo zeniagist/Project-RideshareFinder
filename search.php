@@ -58,6 +58,7 @@ $picture = $row['profilepicture'];
                 margin-top: 50px;
                 text-align: center;
                 color: white;
+                
             }
             
             /*Profile Picture*/
@@ -95,14 +96,11 @@ $picture = $row['profilepicture'];
                 margin-bottom: 100px;
                 margin-top: 20px;
             }
-            .noresults{
+            .noresults, .resultsFound{
                 text-align: center;
-            }
-            
-            .resultsFound{
-                background-color: rgba(99,44,33, 1);
+                background-color: rgba(99,44,33, 0.8);
                 color: white;
-                font-size: 1.5em;
+                font-size: 1.5em
             }
             .journey{
                 text-align:left; 
@@ -292,7 +290,14 @@ $picture = $row['profilepicture'];
             ?>
           .</p>
         </div>
-      </div>    
+      </div>  
+      
+      <!--Spinner-->
+      <div id="spinner">
+          <img src="spinner.gif" width='64' height='64'>
+          <br /> 
+          Loading
+      </div>
     
     <!--Google Map API-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>
