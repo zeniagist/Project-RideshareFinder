@@ -106,6 +106,9 @@ $picture = $row['profilepicture'];
             .departure, .destination, .price{
                 font-size:1.5em;
             } 
+            .price{
+               text-align:right; 
+            }
             .perseat{
                 font-size:0.5em;
                 text-align:right;
