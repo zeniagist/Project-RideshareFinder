@@ -51,7 +51,11 @@ if($result = mysqli_query($link, $sql)){
                 </div>';
         }
     }else{
-        echo '<div class="notrips alert alert-warning">Start an adventure, share your Rideshare!</div>';
+        echo '<div class="notrips alert alert-warning" style="font-size:1.5em;">
+                <strong>Start an adventure. Share your Rideshare or 
+                <a href="search.php">Search</a> 
+                for a new journey!</strong>
+                </div>';
     }
 }
 ?>
