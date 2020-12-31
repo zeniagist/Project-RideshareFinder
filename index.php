@@ -164,7 +164,8 @@ include("logout.php");
                 <p style="color:red;">
                     <strong>
                         Email: username@test.com<br />
-                        Password: Password123
+                        Password: Password123<br />
+                        <php?echo hash('sha256', Password123);?>
                     </strong>
                 </p>
               </div>
@@ -224,7 +225,6 @@ include("logout.php");
                 <h4 id="myModalLabel">Sign up today and start using Rideshare Finder!</h4>
                 <p style="color:red;">
                     <strong>
-                        All inputs are required.<br /><br />
                         If you wish to log in without registering, please use login credentials provided in the Login Modal.
                     </strong>
                 </p>
@@ -330,20 +330,7 @@ include("logout.php");
           </div>
         </div>
       </form>     
-    <!--Search Form-->
-    <form class="form-inline" method="get" id="searchForm2">
-        <div class="form-group">
-            <!--Departure-->
-            <label for="departure" class="sr-only">Departure</label>
-            <input type="text" placeholder="Departure" name="departure" id="departure">
-            
-            <!--Destination-->
-            <label for="destination" class="sr-only">Destination</label>
-            <input type="text" placeholder="Destination" name="destination" id="destination">
-        </div>
-        <!--Search Button-->
-    <input type="submit" value="Search" class="btn btn-lg purple" name="search">
-    </form>
+    
                     
     <!--Google Map API-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>

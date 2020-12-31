@@ -58,6 +58,7 @@ $picture = $row['profilepicture'];
                 margin-top: 50px;
                 text-align: center;
                 color: white;
+                
             }
             
             /*Profile Picture*/
@@ -289,7 +290,14 @@ $picture = $row['profilepicture'];
             ?>
           .</p>
         </div>
-      </div>    
+      </div>  
+      
+      <!--Spinner-->
+      <div id="spinner">
+          <img src="spinner.gif" width='64' height='64'>
+          <br /> 
+          Loading
+      </div>
     
     <!--Google Map API-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFLMFaU5ZWKX-DheNPBrL1yE_ZVQmBvjo&libraries=places"></script>
