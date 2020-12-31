@@ -28,8 +28,8 @@ if(!isset($_POST["destinationLatitude"]) or !isset($_POST["destinationLongitude"
     $destinationLongitude = $_POST["destinationLongitude"];
 }
 
-//set search radius - in miles
-$searchRadius = 100000000;
+//set search radius
+$searchRadius = 10;
 
 //min max Departure Longitude
 $deltaLongitudeDeparture = $searchRadius*360/(24901*cos(deg2rad($departureLatitude)));
@@ -96,29 +96,29 @@ if($errors){
 }
 
 //get all available trips in the carsharetrips table
-// $myArray = [$minLongitudeDeparture < $maxLongitudeDeparture, $minLatitudeDeparture < $maxLatitudeDeparture, $minLongitudeDestination < $maxLongitudeDestination, $minLatitudeDestination < $maxLatitudeDestination];
+$myArray = [$minLongitudeDeparture < $maxLongitudeDeparture, $minLatitudeDeparture < $maxLatitudeDeparture, $minLongitudeDestination < $maxLongitudeDestination, $minLatitudeDestination < $maxLatitudeDestination];
 
-// $queryChoice1 = [
-//     " (departureLongitude BETWEEN $minLongitudeDeparture AND $maxLongitudeDeparture)",
-//     " AND (departureLatitude BETWEEN $minLatitudeDeparture AND $maxLatitudeDeparture)",
-//     " AND (destinationLongitude BETWEEN $minLongitudeDestination AND $maxLongitudeDestination)",
-//     " AND (destinationLatitude BETWEEN $minLatitudeDestination AND $maxLatitudeDestination)"
-// ];
+$queryChoice1 = [
+    " (departureLongitude BETWEEN $minLongitudeDeparture AND $maxLongitudeDeparture)",
+    " AND (departureLatitude BETWEEN $minLatitudeDeparture AND $maxLatitudeDeparture)",
+    " AND (destinationLongitude BETWEEN $minLongitudeDestination AND $maxLongitudeDestination)",
+    " AND (destinationLatitude BETWEEN $minLatitudeDestination AND $maxLatitudeDestination)"
+];
 
-// $queryChoice2 = [
-//     " ((departureLongitude > $minLongitudeDeparture) OR (departureLongitude < $maxLongitudeDeparture))",
-//     " AND (departureLatitude BETWEEN $minLatitudeDeparture AND $maxLatitudeDeparture)",
-//     " AND ((destinationLongitude > $minLongitudeDestination) OR (destinationLongitude < $maxLongitudeDestination))",
-//     " AND (destinationLatitude BETWEEN $minLatitudeDestination AND $maxLatitudeDestination)"
-// ];
+$queryChoice2 = [
+    " ((departureLongitude > $minLongitudeDeparture) OR (departureLongitude < $maxLongitudeDeparture))",
+    " AND (departureLatitude BETWEEN $minLatitudeDeparture AND $maxLatitudeDeparture)",
+    " AND ((destinationLongitude > $minLongitudeDestination) OR (destinationLongitude < $maxLongitudeDestination))",
+    " AND (destinationLatitude BETWEEN $minLatitudeDestination AND $maxLatitudeDestination)"
+];
 
-// $queryChoices = [$queryChoice2, $queryChoice1];
+$queryChoices = [$queryChoice2, $queryChoice1];
 
-$sql = "SELECT * FROM carsharetrips";
+$sql = "SELECT * FROM carsharetrips WHERE ";
 
 for ($value=0; $value<4; $value++) {
     $index = $myArray[$value];
-    // $sql .= $queryChoices[$index][$value];
+    $sql .= $queryChoices[$index][$value];
 }
 
 $result = mysqli_query($link, $sql);
@@ -126,18 +126,153 @@ if(!$result){
     echo "ERROR: Unable to excecute: $sql. " . mysqli_error($link); exit;   
 }
 
+// Print all trips if no trips match
 if(mysqli_num_rows($result) == 0){
-    echo "<div class='alert alert-info noresults'>There are no journeys matching your search!</div>";
+    echo "<div class='alert noresults'>There are no Rideshares within a 10 mile radius<br />
+            Don't let your adventure stop!<br />
+            Check out other Rideshares to inspire your next journey!</div>";
+    
+    $sql = "SELECT * FROM carsharetrips";
+    $result = mysqli_query($link, $sql);
+if(!$result){
+    echo "ERROR: Unable to excecute: $sql. " . mysqli_error($link); exit;   
+}
+    
+    echo '<div id="tripResults">'; 
+    //retrieve each row in $result
+    while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+        //get trip user id
+        $person_id = $row['user_id'];
+        
+        //run query to get user details
+        $sql2="SELECT * FROM users WHERE user_id='$person_id' LIMIT 1";
+        $result2 = mysqli_query($link, $sql2);
+        
+        if($result2){
+        
+            //get user details
+            $row2 = mysqli_fetch_array($result2);
+            
+            //Get phone number:
+            if($_SESSION['user_id']){
+             $phonenumber = $row2['phonenumber'];   
+            }else{
+             $phonenumber = "Please sign up! Only members have access to contact information.";   
+            }
+            //get picture
+            $picture = $row2['profilepicture'];
+            //get firstname
+            $firstname = $row2['first_name'];
+            
+            //more information
+            $moreInformation = $row2['moreinformation'];
+            
+            //get trip departure
+            $tripDeparture = $row['departure'];
+            
+            //get trip destination
+            $tripDestination = $row['destination'];
+            
+            //get trip price
+            $tripPrice = $row['price'];
+            
+            //get seats available in the trip
+            $seatsAvailable = $row['seatsavailable'];
+            
+            //Get trip frequency and time:
+            if($row['regular']=="N"){
+                $frequency = "One-off journey.";
+                $time = $row['date']." at " .$row['time'].".";
+            }else{
+                $frequency = "Regular.";
+                $weekdays=['monday'=>'Mon','tuesday'=>'Tue','wednesday'=>'Wed','thursday'=>'Thu','friday'=>'Fri','saturday'=>'Sat','sunday'=>'Sun'];
+                $array = [];
+                foreach($weekdays  as $key => $value){
+                    if($row[$key] !== ''){
+                        array_push($array,$value);
+                    }
+                    $time = implode("-", $array)." at " .$row['time'].".";
+                }
+            }
+            
+            //print trip all trips
+            echo 
+             "<h4 class='row'>
+                <div class='col-sm-2 journey'>
+                    <div class='driver'>$firstname
+                    </div>
+                    <div>
+                        <img class='previewing responsive' src='$picture' />
+                    </div>
+                </div>
+    
+                <div class='col-sm-8 journey'>
+                    <div>
+                        <span class='departure'>Departure:
+                        </span> 
+                        $tripDeparture.
+                    </div>
+                    <div>
+                        <span class='destination'>Destination:
+                        </span> 
+                        $tripDestination.
+                    </div>
+                    <div class='time'>
+                        $time
+                    </div>
+                    <div>
+                        $frequency
+                    </div>
+                </div>
+    
+                <div class='col-sm-2 price journey2'>
+                    <div class='price'>
+                        $$tripPrice
+                    </div>
+    
+                    <div class='perseat'>
+                        Per Seat
+                    </div>
+                    <div class='seatsavailable'>
+                        $seatsAvailable left
+                    </div>
+                </div>
+            </h4>";
+            
+            echo 
+            "<div class='moreinfo'>
+                <div>
+                    <div class='telephone'>
+                        &#9742: $phonenumber
+                    </div>
+                </div>
+                <div class='aboutme'> 
+                    About me: $moreInformation
+                </div>
+            </div>";
+        }
+    }
+    echo "</div>";
     exit;
 }
 
-echo "<div class='alert resultsFound'>From $departure to $destination.<br />All Available Rideshares:</div>";            
+echo "<div class='alert resultsFound'>From $departure to $destination.<br />Trips within a 10 mile radius:</div>";        
 echo '<div id="tripResults">'; 
 
 //cycle through trips and find close ones
 
 //retrieve each row in $result
 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+    //check if the trip date is in the past
+    $dateOK = 1;
+    if($row['regular']=="N"){
+        $source = $row['date'];
+        $tripDate = DateTime::createFromFormat('D d M, Y', $source);
+        $today = date("D d M, Y");
+        $todayDate = DateTime::createFromFormat('D d M, Y', $today);
+        $dateOK = ($tripDate > $todayDate);
+    }
+    if($dateOK){
     //get trip user id
     $person_id = $row['user_id'];
     
@@ -185,7 +320,7 @@ while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             $weekdays=['monday'=>'Mon','tuesday'=>'Tue','wednesday'=>'Wed','thursday'=>'Thu','friday'=>'Fri','saturday'=>'Sat','sunday'=>'Sun'];
             $array = [];
             foreach($weekdays  as $key => $value){
-                if($row[$key]==1){
+               if($row[$key] !== ''){
                     array_push($array,$value);
                 }
                 $time = implode("-", $array)." at " .$row['time'].".";
@@ -248,6 +383,6 @@ while($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
             </div>
         </div>";
     }
-    
+    }  
 }
 echo "</div>";

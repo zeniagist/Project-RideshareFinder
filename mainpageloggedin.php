@@ -67,6 +67,10 @@ $picture = $row['profilepicture'];
               border-radius: 50%;
             }
             
+            .edittripsbutton{
+                display: none;
+            }
+            
             /*Show autocomplete for cities*/
             .modal{
                 z-index: 20;
@@ -90,6 +94,41 @@ $picture = $row['profilepicture'];
             /*    height: 200px;*/
             /*    margin: 30px auto;*/
             /*}*/
+            
+            /*Trips*/
+            .trip{
+                border:1px solid grey;
+                border-radius: 10px;
+                margin-bottom:10px;
+                background: linear-gradient(#ECE9E6, #FFFFFF);
+                padding: 10px;
+            }
+            .departure, .destination, .price{
+                font-size:1.5em;
+            } 
+            .price{
+               text-align:right; 
+            }
+            .perseat{
+                font-size:0.5em;
+                text-align:right;
+            }
+            .seatsavailable{
+                font-size:0.8em;
+                text-align:right;
+            }
+            .time{
+                margin-top:10px;  
+            }  
+            .notrips{
+            text-align:center;
+            }
+            .trips{
+                margin-top: 20px;
+            }
+          #mytrips{
+            margin-bottom: 100px;   
+          }
             
         </style>
 
@@ -202,8 +241,8 @@ $picture = $row['profilepicture'];
                         Add Trips
                     </button>
                     
-                    <button type="button" class="btn btn-lg purple" data-toggle="modal" data-target="#edittripModal">
-                        Edit
+                    <button type="button" class="btn btn-lg purple edittripsbutton" data-toggle="modal" data-target="#edittripModal">
+                        Edit Trips
                     </button>
                 </div>
                 <div id="myTrips" class="trips">
@@ -281,7 +320,7 @@ $picture = $row['profilepicture'];
                           Wednesday
                         </label>
                         <label>
-                          <input type="checkbox" name="thrusday" id="thrusday" value="4">
+                          <input type="checkbox" name="thursday" id="thursday" value="4">
                           Thrusday
                         </label>
                         <label>
@@ -293,7 +332,7 @@ $picture = $row['profilepicture'];
                           Saturday
                         </label>
                         <label>
-                          <input type="checkbox" name="sunday" id="sunday" value="1">
+                          <input type="checkbox" name="sunday" id="sunday" value="7">
                           Sunday
                         </label>
                     </div>
@@ -388,7 +427,7 @@ $picture = $row['profilepicture'];
                           Wednesday
                         </label>
                         <label>
-                          <input type="checkbox" name="thrusday2" id="thrusday2" value="4">
+                          <input type="checkbox" name="thursday2" id="thursday2" value="4">
                           Thrusday
                         </label>
                         <label>
@@ -400,7 +439,7 @@ $picture = $row['profilepicture'];
                           Saturday
                         </label>
                         <label>
-                          <input type="checkbox" name="sunday2" id="sunday2" value="1">
+                          <input type="checkbox" name="sunday2" id="sunday2" value="7">
                           Sunday
                         </label>
                     </div>
