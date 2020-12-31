@@ -1,3 +1,5 @@
+<?php ob_start();?>
+
 <?php
 // This file receives the user_id and key generated to create the new password
 // This file displays a form to input a new password
@@ -125,3 +127,5 @@ include('connection.php');
     
   </body>
 </html>
+
+<?php ob_flush();?>
