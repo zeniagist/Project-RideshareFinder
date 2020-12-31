@@ -177,14 +177,21 @@ function submitSearchRequest(){
                 heightStyle: "content",
                 icons: false
             });
+            
+            // show results
+            $("#searchResults").fadeIn();
         },
         // AJAX Call fails: show error AJAX Call error
         error: function(){
             // hide spinner
             $("#spinner").hide();
+            
           $("#searchResults").html(
               "<div class='alert alert-danger'>There was an error with the Search AJAX Call. Please try again later</div>"
           );
+          
+          // show results
+            $("#searchResults").fadeIn();
         }
     });
 }
